@@ -15,18 +15,12 @@
 
 using namespace frc;
 
-class Robot : public frc::TimedRobot {
- public:
-  static constexpr int kTimeoutMs = 0; //change this to 0 if you don't want verification
+class Robot : public frc::TimedRobot
+{
+  public:
+	static constexpr int kTimeoutMs = 0; //change this to 0 if you don't want verification
 	static constexpr int kEncoderUnit = 4096;
-	static constexpr int kClawEncoderKnownHigh = -1000; //TODO find low position
-	static constexpr int kElevatorEncoderKnownLow = 0; //TODO find high position
-	static constexpr int kElevatorEncoderMiddle = 16000;
-	static constexpr int kElevatorEncoderHigh = 36000;
-	static constexpr double kAutopausetime = 10;
 	static constexpr double turnSensitivity = 0.6;
-	static constexpr double elevatorSenseCurrent = 5.0;
-	static constexpr double clawSenseCurrent = 5.0;
 
 	//Setting up the TalonSRX's config
 	static constexpr double driveRampTime = 0.2;
@@ -53,7 +47,8 @@ class Robot : public frc::TimedRobot {
 	WPI_TalonSRX *DBRight, *DBRight2;
 	WPI_TalonSRX *Claw, *Claw2, *ClawLeft, *ClawRight;
 	WPI_TalonSRX *Elevator1, *Elevator2, *Elevator3;
-//	DoubleSolenoid *ElevatorSolenoid;
+	DoubleSolenoid *ClimbFront, *ClimbBack;
+	Solenoid *Panel, *ClimbWheel;
 	CANifier *ClawSensor;
 	RobotDrive *db;
 	ADXRS450_Gyro *gyro;
@@ -61,22 +56,22 @@ class Robot : public frc::TimedRobot {
 	PowerDistributionPanel *PDP;
 	Timer *mytimer;
 
-  void MotorBuilder(WPI_TalonSRX *srx, bool brake, bool inverted, double RampTime, int CurrentLimit, int MaxCurrent, int MaxTime);
-  void RobotInit() override;
-  void RobotPeriodic() override;
-  void AutonomousInit() override;
-  void AutonomousPeriodic() override;
-  void TeleopInit() override;
-  void TeleopPeriodic() override;
-  void TestPeriodic() override;
+	void MotorBuilder(WPI_TalonSRX *srx, bool brake, bool inverted, double RampTime, int CurrentLimit, int MaxCurrent, int MaxTime);
+	void RobotInit() override;
+	void RobotPeriodic() override;
+	void AutonomousInit() override;
+	void AutonomousPeriodic() override;
+	void TeleopInit() override;
+	void TeleopPeriodic() override;
+	void TestPeriodic() override;
 
- private:
-  frc::SendableChooser<std::string> m_chooser;
-  const std::string kAutoNameDefault = "Default";
-  const std::string kAutoNameCustom = "My Auto";
-  std::string m_autoSelected;
+  private:
+	frc::SendableChooser<std::string> m_chooser;
+	const std::string kAutoNameDefault = "Default";
+	const std::string kAutoNameCustom = "My Auto";
+	std::string m_autoSelected;
 
-  unsigned int driveState;
+	unsigned int driveState;
 
 	double left;
 	double right;
@@ -96,53 +91,56 @@ class Robot : public frc::TimedRobot {
 	bool flagClawUp = false;
 };
 
-enum PS4 {
-	Square = 1, //
-	Cross = 2, //
-	Circle = 3, //
-	Triangle = 4, //
-	L1 = 5, //
-	R1 = 6, //
-	L2 = 7, //
-	R2 = 8, //
-	Share = 9, //
-	Options = 10, //
-	L3 = 11, //
-	R3 = 12, //
-	PS = 13, //
-	Pad = 14, //
-	PSLeftStickRight = 0, //
-	PSLeftStickDown = 1, //
+enum PS4
+{
+	Square = 1,			   //
+	Cross = 2,			   //
+	Circle = 3,			   //
+	Triangle = 4,		   //
+	L1 = 5,				   //
+	R1 = 6,				   //
+	L2 = 7,				   //
+	R2 = 8,				   //
+	Share = 9,			   //
+	Options = 10,		   //
+	L3 = 11,			   //
+	R3 = 12,			   //
+	PS = 13,			   //
+	Pad = 14,			   //
+	PSLeftStickRight = 0,  //
+	PSLeftStickDown = 1,   //
 	PSRightStickRight = 2, //
-	L2In = 3, //start at -1 and goes to 1      ((L2In)+1)/2 0 to 100%
-	R2In = 4,  //start at -1 and goes to 1
-	PSRightStickDown = 5  //
-//POV up is 0 none is -1
+	L2In = 3,			   //start at -1 and goes to 1      ((L2In)+1)/2 0 to 100%
+	R2In = 4,			   //start at -1 and goes to 1
+	PSRightStickDown = 5   //
+	//POV up is 0 none is -1
 };
 
-enum XB1 { //TODO get XBox mapping
-	A = 1, //
-	B = 2, //
-	X = 3, //
-	Y = 4, //
-	LB = 5, //
-	RB = 6, //
-	View = 7, //hi
-	Menu = 8, //
-	LS = 9, //
-	RS = 10, //
-	XBLeftStickRight = 0, //
-	XBLeftStickDown = 1, //
-	LIn = 2, //0 to 1
-	RIn = 3, //0 to 1
+enum XB1
+{						   //TODO get XBox mapping
+	A = 1,				   //
+	B = 2,				   //
+	X = 3,				   //
+	Y = 4,				   //
+	LB = 5,				   //
+	RB = 6,				   //
+	View = 7,			   //hi
+	Menu = 8,			   //
+	LS = 9,				   //
+	RS = 10,			   //
+	XBLeftStickRight = 0,  //
+	XBLeftStickDown = 1,   //
+	LIn = 2,			   //0 to 1
+	RIn = 3,			   //0 to 1
 	XBRightStickRight = 4, //
-	XBRightStickDown = 5 //
-//POV up is 0 none is -1
+	XBRightStickDown = 5   //
+	//POV up is 0 none is -1
 };
 
-enum Attack {
-	Right = 0, //
-	Down = 1, //
+enum Attack
+{
+	Right = 0,			//
+	Down = 1,			//
 	ReverseThrottle = 2 //
 };
 
@@ -159,15 +157,16 @@ enum Attack {
 //	Elevator3 = 1, //
 //};
 
-enum kPDP {
-	DBLeft = 13, //
-	DBLeft2 = 0, //
-	DBRight = 3, //
-	DBRight2 = 2, //
-	Claw = 14, //
-	ClawLeft = 11, //
-	ClawRight = 4, //
+enum kPDP
+{
+	DBLeft = 13,	//
+	DBLeft2 = 0,	//
+	DBRight = 3,	//
+	DBRight2 = 2,   //
+	Claw = 14,		//
+	ClawLeft = 11,  //
+	ClawRight = 4,  //
 	Elevator1 = 15, //
-	Elevator2 = 0, //
-	Elevator3 = 1, //
+	Elevator2 = 0,  //
+	Elevator3 = 1,  //
 };
