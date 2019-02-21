@@ -9,8 +9,31 @@
 
 #include <string>
 #include <iostream>
-
-#include <frc/WPILib.h>
+#include "frc/ADXRS450_Gyro.h"
+#include "frc/BuiltInAccelerometer.h"
+#include "frc/Compressor.h"
+#include "frc/DoubleSolenoid.h"
+#include "frc/DriverStation.h"
+#include "frc/GenericHID.h"
+#include "frc/I2C.h"
+#include "frc/Joystick.h"
+#include "frc/PowerDistributionPanel.h"
+#include "frc/Preferences.h"
+#include "frc/RobotDrive.h"
+#include "frc/SPI.h"
+#include "frc/Solenoid.h"
+#include "frc/Threads.h"
+#include "frc/TimedRobot.h"
+#include "frc/Timer.h"
+#include "frc/WPIErrors.h"
+#include "frc/XboxController.h"
+#include "frc/buttons/InternalButton.h"
+#include "frc/buttons/JoystickButton.h"
+#include "frc/buttons/NetworkButton.h"
+#include "frc/drive/DifferentialDrive.h"
+#include "frc/filters/LinearDigitalFilter.h"
+#include "frc/smartdashboard/SendableChooser.h"
+#include "frc/smartdashboard/SmartDashboard.h"
 #include <ctre/Phoenix.h>
 
 using namespace frc;
@@ -50,7 +73,7 @@ class Robot : public frc::TimedRobot
 	DoubleSolenoid *ClimbFront, *ClimbBack;
 	Solenoid *Panel, *ClimbWheel;
 	CANifier *ClawSensor;
-	RobotDrive *db;
+	DifferentialDrive *db;
 	ADXRS450_Gyro *gyro;
 	BuiltInAccelerometer *accel;
 	PowerDistributionPanel *PDP;

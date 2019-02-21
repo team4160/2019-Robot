@@ -58,7 +58,7 @@ void Robot::RobotInit()
 
 	ClawSensor = new CANifier(21);
 
-	db = new RobotDrive(DBLeft, DBRight);
+	db = new DifferentialDrive(*DBLeft, *DBRight);
 
 	//set followers
 	DBLeft2->Set(ControlMode::Follower, DBLeft->GetDeviceID());
@@ -177,16 +177,17 @@ void Robot::TeleopPeriodic()
 {
 	if (Joystick1->GetRawButtonPressed(PS4::Options))
 	{
-		++driveState %= 2; //increment and reset to 0 if 3
+		++driveState %= 3; //increment and reset to 0 if 4
 		switch (driveState)
 		{
 		case 0: //Tank
-				//			std::cout << "Tank Drive" << std::endl;
 			frc::SmartDashboard::PutString("Drive Mode", "Tank Drive");
 			break;
 		case 1: //Arcade
-				//			std::cout << "Arcade Drive" << std::endl;
 			frc::SmartDashboard::PutString("Drive Mode", "Arcade Drive");
+		case 2: //Curvature
+			frc::SmartDashboard::PutString("Drive Mode", "Curvature Drive");
+			break;
 		}
 	}
 	switch (driveState)
@@ -199,7 +200,9 @@ void Robot::TeleopPeriodic()
 		driveSpeed = (Joystick1->GetRawAxis(PS4::PSLeftStickDown));
 		// turn = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
 		db->ArcadeDrive(driveSpeed, left, /*squaredInputs*/ true);
-	}
+	case 2: //Curvature
+		db->CurvatureDrive(Joystick1->GetRawAxis(PS4::PSLeftStickDown), Joystick1->GetRawAxis(PS4::PSRightStickDown),false);
+		break;}
 
 	//Claw intakes
 	clawLeftSpeed = 0;
