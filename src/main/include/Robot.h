@@ -55,6 +55,7 @@ class Robot : public frc::TimedRobot {
 	WPI_TalonSRX *Elevator1, *Elevator2, *Elevator3;
 //	DoubleSolenoid *ElevatorSolenoid;
 	CANifier *ClawSensor;
+	RobotDrive *db;
 	ADXRS450_Gyro *gyro;
 	BuiltInAccelerometer *accel;
 	PowerDistributionPanel *PDP;
