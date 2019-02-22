@@ -71,7 +71,7 @@ class Robot : public frc::TimedRobot
 	WPI_TalonSRX *Claw, *Claw2, *ClawLeft, *ClawRight;
 	WPI_TalonSRX *Elevator1, *Elevator2, *Elevator3;
 	DoubleSolenoid *ClimbFront, *ClimbBack;
-	Solenoid *Panel, *ClimbWheel;
+	Solenoid *Hatch, *ClimbWheel;
 	CANifier *ClawSensor;
 	DifferentialDrive *db;
 	ADXRS450_Gyro *gyro;

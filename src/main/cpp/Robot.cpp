@@ -58,6 +58,11 @@ void Robot::RobotInit()
 
 	ClawSensor = new CANifier(21);
 
+	ClimbFront = new DoubleSolenoid();
+	ClimbBack = new DoubleSolenoid();
+	Hatch = new Solenoid();
+	ClimbWheel = new Solenoid();
+
 	db = new DifferentialDrive(*DBLeft, *DBRight);
 
 	//set followers
