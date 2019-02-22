@@ -242,40 +242,40 @@ void Robot::TeleopPeriodic()
 	//	frc::SmartDashboard::PutNumber("Elevator Pulse", Elevator1->GetSensorCollection().GetPulseWidthPosition());
 	//	frc::SmartDashboard::PutNumber("Elevator Quad", Elevator1->GetSensorCollection().GetQuadraturePosition());
 	//	frc::SmartDashboard::PutNumber("Elevator Reverse Limit", Elevator1->GetSensorCollection().IsRevLimitSwitchClosed());
-	frc::SmartDashboard::PutNumber("Claw", Claw->GetSelectedSensorPosition(0));
-	frc::SmartDashboard::PutNumber("Claw Pulse", Claw->GetSensorCollection().GetPulseWidthPosition());
-	frc::SmartDashboard::PutNumber("Claw Quad", Claw->GetSensorCollection().GetQuadraturePosition());
+	// frc::SmartDashboard::PutNumber("Claw", Claw->GetSelectedSensorPosition(0));
+	// frc::SmartDashboard::PutNumber("Claw Pulse", Claw->GetSensorCollection().GetPulseWidthPosition());
+	// frc::SmartDashboard::PutNumber("Claw Quad", Claw->GetSensorCollection().GetQuadraturePosition());
 	//	frc::SmartDashboard::PutNumber("Claw Forward Limit", ClawSensor->GetGeneralInput(ClawSensor->LIMF));
 	//
 	//	frc::SmartDashboard::PutNumber("DBLeft", PDP->GetCurrent(kPDP::DBLeft));
 	//	frc::SmartDashboard::PutNumber("DBLeft2", PDP->GetCurrent(kPDP::DBLeft2));
 	//	frc::SmartDashboard::PutNumber("DBRight", PDP->GetCurrent(kPDP::DBRight));
 	//	frc::SmartDashboard::PutNumber("DBRight2", PDP->GetCurrent(kPDP::DBRight2));
-	frc::SmartDashboard::PutNumber("Elevator1", PDP->GetCurrent(kPDP::Elevator1));
-	frc::SmartDashboard::PutNumber("Elevator2", PDP->GetCurrent(kPDP::Elevator2));
-	frc::SmartDashboard::PutNumber("Elevator3", PDP->GetCurrent(kPDP::Elevator3));
-	frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
-	frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
-	frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
+	// frc::SmartDashboard::PutNumber("Elevator1", PDP->GetCurrent(kPDP::Elevator1));
+	// frc::SmartDashboard::PutNumber("Elevator2", PDP->GetCurrent(kPDP::Elevator2));
+	// frc::SmartDashboard::PutNumber("Elevator3", PDP->GetCurrent(kPDP::Elevator3));
+	// frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
+	// frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
+	// frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
 
 	//(X-A)/(B-A)*(D-C)+C   A-B Input C-D Output
-	ClawSpeed = Joystick2->GetRawAxis(2);
-	Claw->Set(ControlMode::Position, (ClawSpeed + 1) / 2 * (clawForwardLimit - clawReverseLimit) + clawReverseLimit);
+	// ClawSpeed = Joystick2->GetRawAxis(2);
+	// Claw->Set(ControlMode::Position, (ClawSpeed + 1) / 2 * (clawForwardLimit - clawReverseLimit) + clawReverseLimit);
 
 	//	Elevator1->Set(ControlMode::PercentOutput, Joystick2->GetRawAxis(Attack::Down));
-	ElevatorSpeed = Joystick2->GetRawAxis(Attack::Down);
-	if (ElevatorSpeed > 0.03)
-	{
-		Elevator1->Set(ControlMode::PercentOutput, ElevatorSpeed * 0.5);
-	}
-	else if (ElevatorSpeed < -0.03)
-	{
-		Elevator1->Set(ControlMode::PercentOutput, ElevatorSpeed * 0.8);
-	}
-	else
-	{
-		Elevator1->Set(ControlMode::PercentOutput, 0);
-	}
+	// ElevatorSpeed = Joystick2->GetRawAxis(Attack::Down);
+	// if (ElevatorSpeed > 0.03)
+	// {
+	// 	Elevator1->Set(ControlMode::PercentOutput, ElevatorSpeed * 0.5);
+	// }
+	// else if (ElevatorSpeed < -0.03)
+	// {
+	// 	Elevator1->Set(ControlMode::PercentOutput, ElevatorSpeed * 0.8);
+	// }
+	// else
+	// {
+	// 	Elevator1->Set(ControlMode::PercentOutput, 0);
+	// }
 }
 
 void Robot::TestPeriodic() {}
