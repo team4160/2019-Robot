@@ -205,30 +205,30 @@ void Robot::TeleopPeriodic()
 		break;}
 
 	//Claw intakes
-	clawLeftSpeed = 0;
-	clawRightSpeed = 0;
-	if (Joystick2->GetRawButton(6))
-	{
-		clawLeftSpeed = .75;
-		clawRightSpeed = .75;
-	}
-	if (Joystick2->GetRawButton(7))
-	{
-		clawLeftSpeed = -.75;
-		clawRightSpeed = -.75;
-	}
-	if (Joystick2->GetRawButton(10))
-	{
-		clawLeftSpeed = .75;
-		clawRightSpeed = -.75;
-	}
-	if (Joystick2->GetRawButton(11))
-	{
-		clawLeftSpeed = -.75;
-		clawRightSpeed = .75;
-	}
-	ClawLeft->Set(clawLeftSpeed);
-	ClawRight->Set(clawRightSpeed);
+	// clawLeftSpeed = 0;
+	// clawRightSpeed = 0;
+	// if (Joystick2->GetRawButton(6))
+	// {
+	// 	clawLeftSpeed = .75;
+	// 	clawRightSpeed = .75;
+	// }
+	// if (Joystick2->GetRawButton(7))
+	// {
+	// 	clawLeftSpeed = -.75;
+	// 	clawRightSpeed = -.75;
+	// }
+	// if (Joystick2->GetRawButton(10))
+	// {
+	// 	clawLeftSpeed = .75;
+	// 	clawRightSpeed = -.75;
+	// }
+	// if (Joystick2->GetRawButton(11))
+	// {
+	// 	clawLeftSpeed = -.75;
+	// 	clawRightSpeed = .75;
+	// }
+	// ClawLeft->Set(clawLeftSpeed);
+	// ClawRight->Set(clawRightSpeed);
 
 	//	frc::SmartDashboard::PutNumber("Gyroscope", gyro->GetAngle());
 	//	frc::SmartDashboard::PutNumber("POV", Joystick2->GetPOV());
