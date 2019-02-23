@@ -49,12 +49,12 @@ void Robot::RobotInit()
 	DBRight = new WPI_TalonSRX(3);
 	DBRight2 = new WPI_TalonSRX(4);
 	Claw = new WPI_TalonSRX(5);
-	ClawLeft = new WPI_TalonSRX(6);
-	ClawRight = new WPI_TalonSRX(7);
-	Elevator1 = new WPI_TalonSRX(8);
-	Elevator2 = new WPI_TalonSRX(9);
-	Elevator3 = new WPI_TalonSRX(10);
-	Claw2 = new WPI_TalonSRX(11);
+	Claw2 = new WPI_TalonSRX(6);
+	ClawLeft = new WPI_TalonSRX(7);
+	ClawRight = new WPI_TalonSRX(8);
+	Elevator1 = new WPI_TalonSRX(9);
+	Elevator2 = new WPI_TalonSRX(10);
+	ClimbArm = new WPI_TalonSRX(11);
 
 	ClawSensor = new CANifier(21);
 
@@ -206,10 +206,10 @@ void Robot::TeleopPeriodic()
 		// turn = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
 		db->ArcadeDrive(driveSpeed, left, /*squaredInputs*/ true);
 	case 2: //Curvature
-		db->CurvatureDrive(Joystick1->GetRawAxis(PS4::PSLeftStickDown), Joystick1->GetRawAxis(PS4::PSRightStickDown),false);
+		db->CurvatureDrive(Joystick1->GetRawAxis(PS4::PSLeftStickDown), Joystick1->GetRawAxis(PS4::PSRightStickDown),Joystick1->GetRawButton(PS4::R3));
 		break;}
 
-	//Claw intakes
+	// Claw intakes
 	// clawLeftSpeed = 0;
 	// clawRightSpeed = 0;
 	// if (Joystick2->GetRawButton(6))
