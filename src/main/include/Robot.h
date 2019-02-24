@@ -69,7 +69,8 @@ class Robot : public frc::TimedRobot
 	WPI_TalonSRX *DBLeft, *DBLeft2;
 	WPI_TalonSRX *DBRight, *DBRight2;
 	WPI_TalonSRX *Claw, *Claw2, *ClawLeft, *ClawRight;
-	WPI_TalonSRX *Elevator1, *Elevator2, *Elevator3;
+	WPI_TalonSRX *Elevator1, *Elevator2;
+	WPI_TalonSRX *ClimbArm;
 	DoubleSolenoid *ClimbFront, *ClimbBack;
 	Solenoid *Hatch, *ClimbWheel;
 	CANifier *ClawSensor;
@@ -167,19 +168,6 @@ enum Attack
 	ReverseThrottle = 2 //
 };
 
-//enum kPDP {practice
-//	DBLeft = 13, //
-//	DBLeft2 = 12, //
-//	DBRight = 3, //
-//	DBRight2 = 2, //
-//	Claw = 14, //
-//	ClawLeft = 11, //
-//	ClawRight = 4, //
-//	Elevator1 = 15, //
-//	Elevator2 = 0, //
-//	Elevator3 = 1, //
-//};
-
 enum kPDP
 {
 	DBLeft = 13,	//
@@ -191,5 +179,5 @@ enum kPDP
 	ClawRight = 4,  //
 	Elevator1 = 15, //
 	Elevator2 = 0,  //
-	Elevator3 = 1,  //
+	ClimbArm = 1,  //
 };

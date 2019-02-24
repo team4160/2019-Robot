@@ -69,7 +69,6 @@ void Robot::RobotInit()
 	DBLeft2->Set(ControlMode::Follower, DBLeft->GetDeviceID());
 	DBRight2->Set(ControlMode::Follower, DBRight->GetDeviceID());
 	Elevator2->Set(ControlMode::Follower, Elevator1->GetDeviceID());
-	Elevator3->Set(ControlMode::Follower, Elevator1->GetDeviceID());
 	Claw2->Set(ControlMode::Follower, Claw->GetDeviceID());
 
 	//Motor Builder(&Motor,brake,invert,Ramp,limit,maxlimit,maxtime)
@@ -83,7 +82,7 @@ void Robot::RobotInit()
 	MotorBuilder(ClawRight, /*brake*/ true, /*invert*/ true, clawRampTime, clawCurrentLimit, clawMaxCurrent, clawMaxTime);
 	MotorBuilder(Elevator1, /*brake*/ true, /*invert*/ true, elevatorRampTime, elevatorCurrentLimit, elevatorMaxCurrent, elevatorMaxTime);
 	MotorBuilder(Elevator2, /*brake*/ true, /*invert*/ true, elevatorRampTime, elevatorCurrentLimit, elevatorMaxCurrent, elevatorMaxTime);
-	MotorBuilder(Elevator3, /*brake*/ true, /*invert*/ true, elevatorRampTime, elevatorCurrentLimit, elevatorMaxCurrent, elevatorMaxTime);
+	MotorBuilder(ClimbArm, /*brake*/ true, /*invert*/ true, elevatorRampTime, elevatorCurrentLimit, elevatorMaxCurrent, elevatorMaxTime);
 
 	//Add CANifier encoder
 	ClawSensor->ConfigVelocityMeasurementPeriod(CANifierVelocityMeasPeriod::Period_100Ms, kTimeoutMs);
@@ -258,7 +257,7 @@ void Robot::TeleopPeriodic()
 	//	frc::SmartDashboard::PutNumber("DBRight2", PDP->GetCurrent(kPDP::DBRight2));
 	// frc::SmartDashboard::PutNumber("Elevator1", PDP->GetCurrent(kPDP::Elevator1));
 	// frc::SmartDashboard::PutNumber("Elevator2", PDP->GetCurrent(kPDP::Elevator2));
-	// frc::SmartDashboard::PutNumber("Elevator3", PDP->GetCurrent(kPDP::Elevator3));
+	// frc::SmartDashboard::PutNumber("ClimbArm", PDP->GetCurrent(kPDP::ClimbArm));
 	// frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
 	// frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
 	// frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
