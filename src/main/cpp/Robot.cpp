@@ -39,6 +39,25 @@ void Robot::RobotInit()
 	Joystick1 = new Joystick(0);
 	Joystick2 = new Joystick(1);
 
+	BCargoCollect = new Button(0); //set collection level
+	BClawIn = new Button(1); //turn on intake wheels
+	BCargoMid = new Button(2); //set mid cargo level
+	BCargoLow = new Button(3); //set low cargo level
+	BClawOut = new Button(4); //turn on output wheels
+	BHatchLow = new Button(5); //set low hatch level
+	BHatchMid = new Button(6); //set mid hatch level
+	BHatchOut = new Button(7); //turn on hatch pistons
+	BElevatorHome = new Button(8); //set to home position
+	BClimbPistons = new Button(9); //turn on all climb pistons
+	BClimbArmOn = new Button(10); //turn on arm piston & wheel
+	BClimbFrontOff = new Button(11); //turn off front pistons
+	BArmOff = new Button(12); //turn off arm piston & wheel
+	BClimbBackOff = new Button(13); //turn off back pistons
+	BClawUp = new Button(14); //move claw up
+	BClawDown = new Button(15); //move claw down
+	BElevatorUp = new Button(16); //move elevator up
+	BElevatorDown = new Button(17); //move elevator up
+
 	gyro = new ADXRS450_Gyro(SPI::kOnboardCS0);
 	PDP = new PowerDistributionPanel(0);
 	accel = new BuiltInAccelerometer();

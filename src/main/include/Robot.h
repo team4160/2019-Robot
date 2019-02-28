@@ -30,6 +30,7 @@
 #include "frc/buttons/InternalButton.h"
 #include "frc/buttons/JoystickButton.h"
 #include "frc/buttons/NetworkButton.h"
+#include "frc/buttons.h"
 #include "frc/drive/DifferentialDrive.h"
 #include "frc/filters/LinearDigitalFilter.h"
 #include "frc/smartdashboard/SendableChooser.h"
@@ -66,6 +67,11 @@ class Robot : public frc::TimedRobot
 
 	//Creating the TalonSRXs and sensors
 	Joystick *Joystick1, *Joystick2;
+	Button *BCargoCollect, *BClawIn, *BCargoMid, *BCargoLow, *BClawOut;
+	Button *BHatchLow, *BHatchMid, *BHatchOut, *BElevatorHome;
+	Button *BClimbPistons, *BClimbArmOn, *BClimbFrontOff, *BArmOff, *BClimbBackOff;
+	Button *BClawUp, *BClawDown;
+	Button *BElevatorUp, *BElevatorDown;
 	WPI_TalonSRX *DBLeft, *DBLeft2;
 	WPI_TalonSRX *DBRight, *DBRight2;
 	WPI_TalonSRX *Claw, *Claw2, *ClawLeft, *ClawRight;
