@@ -36,27 +36,8 @@ void Robot::RobotInit()
 	driveState = 0; //set to tank
 
 	//Setting the Controllers
-	Joystick1 = new Joystick(0);
-	Joystick2 = new Joystick(1);
-
-	BCargoCollect = new Button(0); //set collection level
-	BClawIn = new Button(1); //turn on intake wheels
-	BCargoMid = new Button(2); //set mid cargo level
-	BCargoLow = new Button(3); //set low cargo level
-	BClawOut = new Button(4); //turn on output wheels
-	BHatchLow = new Button(5); //set low hatch level
-	BHatchMid = new Button(6); //set mid hatch level
-	BHatchOut = new Button(7); //turn on hatch pistons
-	BElevatorHome = new Button(8); //set to home position
-	BClimbPistons = new Button(9); //turn on all climb pistons
-	BClimbArmOn = new Button(10); //turn on arm piston & wheel
-	BClimbFrontOff = new Button(11); //turn off front pistons
-	BArmOff = new Button(12); //turn off arm piston & wheel
-	BClimbBackOff = new Button(13); //turn off back pistons
-	BClawUp = new Button(14); //move claw up
-	BClawDown = new Button(15); //move claw down
-	BElevatorUp = new Button(16); //move elevator up
-	BElevatorDown = new Button(17); //move elevator up
+	Driver = new Joystick(0);
+	Operator = new Joystick(1);
 
 	gyro = new ADXRS450_Gyro(SPI::kOnboardCS0);
 	PDP = new PowerDistributionPanel(0);
@@ -77,10 +58,10 @@ void Robot::RobotInit()
 
 	ClawSensor = new CANifier(21);
 
-	ClimbFront = new DoubleSolenoid();
-	ClimbBack = new DoubleSolenoid();
-	Hatch = new Solenoid();
-	ClimbWheel = new Solenoid();
+	Hatch = new Solenoid(0);
+	ClimbWheel = new Solenoid(1);
+	ClimbFront = new DoubleSolenoid(2,3);
+	ClimbBack = new DoubleSolenoid(6,7);
 
 	db = new DifferentialDrive(*DBLeft, *DBRight);
 
@@ -198,7 +179,7 @@ void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic()
 {
-	if (Joystick1->GetRawButtonPressed(PS4::Options))
+	if (Driver->GetRawButtonPressed(PS4::Options))
 	{
 		++driveState %= 3; //increment and reset to 0 if 4
 		switch (driveState)
@@ -216,15 +197,15 @@ void Robot::TeleopPeriodic()
 	switch (driveState)
 	{
 	case 0: //Tank
-		db->TankDrive(Joystick1->GetRawAxis(PS4::PSLeftStickDown), Joystick1->GetRawAxis(PS4::PSRightStickDown));
+		db->TankDrive(Driver->GetRawAxis(PS4::PSLeftStickDown), Driver->GetRawAxis(PS4::PSRightStickDown));
 		break;
 	case 1: //Arcade
-		left = (Joystick1->GetRawAxis(PS4::PSRightStickRight));
-		driveSpeed = (Joystick1->GetRawAxis(PS4::PSLeftStickDown));
+		left = (Driver->GetRawAxis(PS4::PSRightStickRight));
+		driveSpeed = (Driver->GetRawAxis(PS4::PSLeftStickDown));
 		// turn = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
 		db->ArcadeDrive(driveSpeed, left, /*squaredInputs*/ true);
 	case 2: //Curvature
-		db->CurvatureDrive(Joystick1->GetRawAxis(PS4::PSLeftStickDown), Joystick1->GetRawAxis(PS4::PSRightStickDown),Joystick1->GetRawButton(PS4::R3));
+		db->CurvatureDrive(Driver->GetRawAxis(PS4::PSLeftStickDown), Driver->GetRawAxis(PS4::PSRightStickDown),Driver->GetRawButton(PS4::R3));
 		break;}
 
 	// Claw intakes

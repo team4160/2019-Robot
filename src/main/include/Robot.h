@@ -30,7 +30,6 @@
 #include "frc/buttons/InternalButton.h"
 #include "frc/buttons/JoystickButton.h"
 #include "frc/buttons/NetworkButton.h"
-#include "frc/buttons.h"
 #include "frc/drive/DifferentialDrive.h"
 #include "frc/filters/LinearDigitalFilter.h"
 #include "frc/smartdashboard/SendableChooser.h"
@@ -65,13 +64,9 @@ class Robot : public frc::TimedRobot
 	static constexpr int clawForwardLimit = -150; //eg. 5 rotations TODO test the top soft limit
 	static constexpr int clawReverseLimit = -850; //TODO test bottom soft limit
 
+	Joystick *Driver, *Operator;
+
 	//Creating the TalonSRXs and sensors
-	Joystick *Joystick1, *Joystick2;
-	Button *BCargoCollect, *BClawIn, *BCargoMid, *BCargoLow, *BClawOut;
-	Button *BHatchLow, *BHatchMid, *BHatchOut, *BElevatorHome;
-	Button *BClimbPistons, *BClimbArmOn, *BClimbFrontOff, *BArmOff, *BClimbBackOff;
-	Button *BClawUp, *BClawDown;
-	Button *BElevatorUp, *BElevatorDown;
 	WPI_TalonSRX *DBLeft, *DBLeft2;
 	WPI_TalonSRX *DBRight, *DBRight2;
 	WPI_TalonSRX *Claw, *Claw2, *ClawLeft, *ClawRight;
@@ -84,7 +79,7 @@ class Robot : public frc::TimedRobot
 	ADXRS450_Gyro *gyro;
 	BuiltInAccelerometer *accel;
 	PowerDistributionPanel *PDP;
-	Timer *mytimer;
+	//Timer *mytimer;
 
 	void MotorBuilder(WPI_TalonSRX *srx, bool brake, bool inverted, double RampTime, int CurrentLimit, int MaxCurrent, int MaxTime);
 	void RobotInit() override;
@@ -186,4 +181,26 @@ enum kPDP
 	Elevator1 = 15, //
 	Elevator2 = 0,  //
 	ClimbArm = 1,  //
+};
+
+enum bOperator
+{
+	bCargoCollect = 0, //set collection level
+	bClawIn = 1, //turn on intake wheels
+	bCargoMid = 2, //set mid cargo level
+	bCargoLow = 3, //set low cargo level
+	bClawOut = 4, //turn on output wheels
+	bHatchLow = 5, //set low hatch level
+	bHatchMid = 6, //set mid hatch level
+	bHatchOut = 7, //turn on hatch pistons
+	bElevatorHome = 8, //set to home position
+	bClimbPistons = 9, //turn on all climb pistons
+	bClimbArmOn = 10, //turn on arm piston & wheel
+	bClimbFrontOff = 11, //turn off front pistons
+	bArmOff = 12, //turn off arm piston & wheel
+	bClimbBackOff = 13, //turn off back pistons
+	bClawUp = 14, //move claw up
+	bClawDown = 15, //move claw down
+	bElevatorUp = 16, //move elevator up
+	bElevatorDown = 17, //move elevator up
 };
