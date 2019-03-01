@@ -41,7 +41,7 @@ using namespace frc;
 class Robot : public frc::TimedRobot
 {
   public:
-	static constexpr int kTimeoutMs = 0; //change this to 0 if you don't want verification
+	static constexpr int kTimeoutMs = 10; //change this to 0 if you don't want verification
 	static constexpr int kEncoderUnit = 4096;
 	static constexpr double turnSensitivity = 0.6;
 
