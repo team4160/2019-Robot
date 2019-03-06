@@ -54,10 +54,10 @@ void Robot::RobotInit()
 
 	ClawSensor = new CANifier(21);
 
-	Hatch = new Solenoid(0); // PCM ID is 0
-	ClimbWheel = new Solenoid(1);
-	ClimbFront = new DoubleSolenoid(2, 3); // foward,reverse
-	ClimbBack = new DoubleSolenoid(6, 7);
+	Hatch = new Solenoid(2); // PCM ID is 0
+	ClimbWheel = new Solenoid(5);
+	ClimbFront = new DoubleSolenoid(0, 1); // foward,reverse
+	ClimbBack = new DoubleSolenoid(7, 6);
 
 	db = new DifferentialDrive(*DBLeft, *DBRight);
 
@@ -70,8 +70,8 @@ void Robot::RobotInit()
 	// Motor Builder(&Motor,brake,invert,Ramp,limit,maxlimit,maxtime)
 	MotorBuilder(DBLeft, /*brake*/ true, /*invert*/ false, driveRampTime, driveCurrentLimit, driveMaxCurrent, driveMaxTime);
 	MotorBuilder(DBLeft2, /*brake*/ true, /*invert*/ false, driveRampTime, driveCurrentLimit, driveMaxCurrent, driveMaxTime);
-	MotorBuilder(DBRight, /*brake*/ true, /*invert*/ true, driveRampTime, driveCurrentLimit, driveMaxCurrent, driveMaxTime);
-	MotorBuilder(DBRight2, /*brake*/ true, /*invert*/ true, driveRampTime, driveCurrentLimit, driveMaxCurrent, driveMaxTime);
+	MotorBuilder(DBRight, /*brake*/ true, /*invert*/ false, driveRampTime, driveCurrentLimit, driveMaxCurrent, driveMaxTime);
+	MotorBuilder(DBRight2, /*brake*/ true, /*invert*/ false, driveRampTime, driveCurrentLimit, driveMaxCurrent, driveMaxTime);
 	MotorBuilder(Claw, /*brake*/ true, /*invert*/ false, clawRampTime, clawCurrentLimit, clawMaxCurrent, clawMaxTime);
 	MotorBuilder(Claw2, /*brake*/ true, /*invert*/ false, clawRampTime, clawCurrentLimit, clawMaxCurrent, clawMaxTime);
 	MotorBuilder(ClawLeft, /*brake*/ true, /*invert*/ false, clawRampTime, clawCurrentLimit, clawMaxCurrent, clawMaxTime);
@@ -173,6 +173,10 @@ void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic()
 {
+	if (Driver->GetRawButtonReleased(PS4::R3)){
+		flagSpeed!=flagSpeed;
+	}
+
 	if (Driver->GetRawButtonPressed(PS4::Options))
 	{
 		++driveState %= 3; //increment and reset to 0 if 3
@@ -200,8 +204,11 @@ void Robot::TeleopPeriodic()
 		db->ArcadeDrive(driveSpeed, left, /*squaredInputs*/ true);
 		break;
 	case 2: //Curvature
-		db->CurvatureDrive(Driver->GetRawAxis(PS4::PSLeftStickDown), Driver->GetRawAxis(PS4::PSRightStickDown), Driver->GetRawButton(PS4::R3));
+		db->CurvatureDrive(Driver->GetRawAxis(PS4::PSLeftStickDown), Driver->GetRawAxis(PS4::PSRightStickDown), flagSpeed);
 	}
+	// if(operator->GetRawButtonReleased(bOperator::bClawUp)){
+	// 	Claw->Set(ControlMode::Position,kposition);
+	// }
 
 	// Claw intakes
 	// clawLeftSpeed = 0;
@@ -269,6 +276,21 @@ void Robot::TeleopPeriodic()
 	// frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
 	// frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
 	// frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
+	frc::SmartDashboard::PutNumber("Speed Flag", flagSpeed);
+	frc::SmartDashboard::PutNumber("Drive Mode",driveState);
+	if (Operator->GetRawButton(1)) Hatch->Set(true);
+	else Hatch->Set(false);
+	if (Operator->GetRawButton(4)) ClimbWheel->Set(true);
+	else ClimbWheel->Set(false);
+	if (Operator->GetRawButton(6)) ClimbArm->Set(1);
+	else if (Operator->GetRawButton(7)) ClimbArm->Set(-1);
+	else ClimbArm->Set(0);
+	if (Operator->GetRawButton(3)) ClimbBack->Set(DoubleSolenoid::Value::kReverse);
+	else ClimbBack->Set(DoubleSolenoid::Value::kForward);
+	if (Operator->GetRawButton(2)) ClimbFront->Set(DoubleSolenoid::Value::kReverse);
+	else ClimbFront->Set(DoubleSolenoid::Value::kForward);
+	Elevator1->Set(Operator->GetRawAxis(Attack::Down)/4);
+	Claw->Set(Operator->GetRawAxis(Attack::Right)/4);
 }
 
 void Robot::TestPeriodic() {}

@@ -106,6 +106,7 @@ class Robot : public frc::TimedRobot
 	bool flagElevatorMid = false;
 	bool flagElevatorHigh = false;
 	bool flagClawUp = false;
+	bool flagSpeed = true;
 };
 
 enum PS4
