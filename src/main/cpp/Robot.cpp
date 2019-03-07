@@ -178,81 +178,19 @@ void Robot::TeleopPeriodic()
 }
 void Robot::Periodic()
 {
-	if (Driver->GetRawButtonReleased(PS4::R3)){
-		flagSpeed!=flagSpeed;
-	}
+	//Tank
+	// db->TankDrive(Driver->GetRawAxis(PS4::PSLeftStickDown), Driver->GetRawAxis(PS4::PSRightStickRight));
 
-	if (Driver->GetRawButtonPressed(PS4::Options))
-	{
-		++driveState %= 3; //increment and reset to 0 if 3
-		switch (driveState)
-		{
-		case 0: //Tank
-			frc::SmartDashboard::PutString("Drive Mode", "Tank Drive");
-			break;
-		case 1: //Arcade
-			frc::SmartDashboard::PutString("Drive Mode", "Arcade Drive");
-			break;
-		case 2: //Curvature
-			frc::SmartDashboard::PutString("Drive Mode", "Curvature Drive");
-		}
-	}
-	switch (driveState)
-	{
-	case 0: //Tank
-		db->TankDrive(Driver->GetRawAxis(PS4::PSLeftStickDown), Driver->GetRawAxis(PS4::PSRightStickDown));
-		break;
-	case 1: //Arcade
-		left = (Driver->GetRawAxis(PS4::PSRightStickRight));
-		driveSpeed = (Driver->GetRawAxis(PS4::PSLeftStickDown));
-		// turn = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
-		db->ArcadeDrive(driveSpeed, left, /*squaredInputs*/ true);
-		break;
-	case 2: //Curvature
-		db->CurvatureDrive(Driver->GetRawAxis(PS4::PSLeftStickDown), Driver->GetRawAxis(PS4::PSRightStickDown), flagSpeed);
-	}
-	// if(operator->GetRawButtonReleased(bOperator::bClawUp)){
-	// 	Claw->Set(ControlMode::Position,kposition);
-	// }
+	//Arcade
+	// left = (Driver->GetRawAxis(XB1::XBRightStickDown));
+	// driveSpeed = (Driver->GetRawAxis(XB1::XBLeftStickDown));
+	// // turn = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
+	// db->ArcadeDrive(driveSpeed, left, /*squaredInputs*/ true);
 
-	// Claw intakes
-	// clawLeftSpeed = 0;
-	// clawRightSpeed = 0;
-	// if (Operator->GetRawButton(6))
-	// {
-	// 	clawLeftSpeed = .75;
-	// 	clawRightSpeed = .75;
-	// }
-	// if (Operator->GetRawButton(7))
-	// {
-	// 	clawLeftSpeed = -.75;
-	// 	clawRightSpeed = -.75;
-	// }
-	// if (Operator->GetRawButton(10))
-	// {
-	// 	clawLeftSpeed = .75;
-	// 	clawRightSpeed = -.75;
-	// }
-	// if (Operator->GetRawButton(11))
-	// {
-	// 	clawLeftSpeed = -.75;
-	// 	clawRightSpeed = .75;
-	// }
-	// ClawLeft->Set(clawLeftSpeed);
-	// ClawRight->Set(clawRightSpeed);
-
-	// (X - A) / (B - A) * (D - C) + C A - B Input C - D Output
-	// ClawSpeed = Operator->GetRawAxis(2);
-	// Claw->Set(ControlMode::Position, (ClawSpeed + 1) / 2 * (clawForwardLimit - clawReverseLimit) + clawReverseLimit);
-
-	// Elevator1->Set(ControlMode::PercentOutput, Operator->GetRawAxis(Attack::Down));
-	// ElevatorSpeed = Operator->GetRawAxis(Attack::Down);
-	// if (ElevatorSpeed > 0.03)
-	// 	Elevator1->Set(ControlMode::PercentOutput, ElevatorSpeed * 0.5);
-	// else if (ElevatorSpeed < -0.03)
-	// 	Elevator1->Set(ControlMode::PercentOutput, ElevatorSpeed * 0.8);
-	// else
-	// 	Elevator1->Set(ControlMode::PercentOutput, 0);
+	//Curvature
+	if (Driver->GetRawButtonReleased(XB1::RS))
+		flagSpeed != flagSpeed;
+	db->CurvatureDrive(Driver->GetRawAxis(XB1::XBLeftStickDown), Driver->GetRawAxis(XB1::XBRightStickDown), flagSpeed);
 
 	// frc::SmartDashboard::PutNumber("Gyroscope", gyro->GetAngle());
 	// frc::SmartDashboard::PutNumber("POV", Operator->GetPOV());
@@ -262,41 +200,71 @@ void Robot::Periodic()
 	// frc::SmartDashboard::PutNumber("Drive Right", DBRight->GetSelectedSensorPosition(0));
 	// frc::SmartDashboard::PutNumber("Drive Right Pulse", DBRight->GetSensorCollection().GetPulseWidthPosition());
 	// frc::SmartDashboard::PutNumber("Drive Right Quad", DBRight->GetSensorCollection().GetQuadraturePosition());
-	// frc::SmartDashboard::PutNumber("Elevator", Elevator1->GetSelectedSensorPosition(0));
-	// frc::SmartDashboard::PutNumber("Elevator Pulse", Elevator1->GetSensorCollection().GetPulseWidthPosition());
-	// frc::SmartDashboard::PutNumber("Elevator Quad", Elevator1->GetSensorCollection().GetQuadraturePosition());
+	frc::SmartDashboard::PutNumber("Elevator", Elevator1->GetSelectedSensorPosition(0));
+	frc::SmartDashboard::PutNumber("Elevator Pulse", Elevator1->GetSensorCollection().GetPulseWidthPosition());
+	frc::SmartDashboard::PutNumber("Elevator Quad", Elevator1->GetSensorCollection().GetQuadraturePosition());
 	// frc::SmartDashboard::PutNumber("Elevator Reverse Limit", Elevator1->GetSensorCollection().IsRevLimitSwitchClosed());
-	// frc::SmartDashboard::PutNumber("Claw", Claw->GetSelectedSensorPosition(0));
-	// frc::SmartDashboard::PutNumber("Claw Pulse", Claw->GetSensorCollection().GetPulseWidthPosition());
-	// frc::SmartDashboard::PutNumber("Claw Quad", Claw->GetSensorCollection().GetQuadraturePosition());
+	frc::SmartDashboard::PutNumber("Claw", Claw->GetSelectedSensorPosition(0));
+	frc::SmartDashboard::PutNumber("Claw Pulse", Claw->GetSensorCollection().GetPulseWidthPosition());
+	frc::SmartDashboard::PutNumber("Claw Quad", Claw->GetSensorCollection().GetQuadraturePosition());
 	// frc::SmartDashboard::PutNumber("Claw Forward Limit", ClawSensor->GetGeneralInput(ClawSensor->LIMF));
 
-	// frc::SmartDashboard::PutNumber("DBLeft", PDP->GetCurrent(kPDP::DBLeft));
-	// frc::SmartDashboard::PutNumber("DBLeft2", PDP->GetCurrent(kPDP::DBLeft2));
-	// frc::SmartDashboard::PutNumber("DBRight", PDP->GetCurrent(kPDP::DBRight));
-	// frc::SmartDashboard::PutNumber("DBRight2", PDP->GetCurrent(kPDP::DBRight2));
-	// frc::SmartDashboard::PutNumber("Elevator1", PDP->GetCurrent(kPDP::Elevator1));
-	// frc::SmartDashboard::PutNumber("Elevator2", PDP->GetCurrent(kPDP::Elevator2));
-	// frc::SmartDashboard::PutNumber("ClimbArm", PDP->GetCurrent(kPDP::ClimbArm));
-	// frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
-	// frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
-	// frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
+	frc::SmartDashboard::PutNumber("DBLeft", PDP->GetCurrent(kPDP::DBLeft));
+	frc::SmartDashboard::PutNumber("DBLeft2", PDP->GetCurrent(kPDP::DBLeft2));
+	frc::SmartDashboard::PutNumber("DBRight", PDP->GetCurrent(kPDP::DBRight));
+	frc::SmartDashboard::PutNumber("DBRight2", PDP->GetCurrent(kPDP::DBRight2));
+	frc::SmartDashboard::PutNumber("Elevator1", PDP->GetCurrent(kPDP::Elevator1));
+	frc::SmartDashboard::PutNumber("Elevator2", PDP->GetCurrent(kPDP::Elevator2));
+	frc::SmartDashboard::PutNumber("ClimbArm", PDP->GetCurrent(kPDP::ClimbArm));
+	frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
+	frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
+	frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
 	frc::SmartDashboard::PutNumber("Speed Flag", flagSpeed);
-	frc::SmartDashboard::PutNumber("Drive Mode",driveState);
+	frc::SmartDashboard::PutNumber("Drive Mode", driveState);
 
-	if (Operator->GetRawButton(1)) Hatch->Set(true);
-	else Hatch->Set(false);
-	if (Operator->GetRawButton(4)) ClimbWheel->Set(true);
-	else ClimbWheel->Set(false);
-	if (Operator->GetRawButton(6)) ClimbArm->Set(1);
-	else if (Operator->GetRawButton(7)) ClimbArm->Set(-1);
-	else ClimbArm->Set(0);
-	if (Operator->GetRawButton(3)) ClimbBack->Set(DoubleSolenoid::Value::kReverse);
-	else ClimbBack->Set(DoubleSolenoid::Value::kForward);
-	if (Operator->GetRawButton(2)) ClimbFront->Set(DoubleSolenoid::Value::kReverse);
-	else ClimbFront->Set(DoubleSolenoid::Value::kForward);
-	Elevator1->Set(Operator->GetRawAxis(Attack::Down)/4);
-	Claw->Set(Operator->GetRawAxis(Attack::Right)/4);
+	if (Operator->GetRawButton(bOperator::bHatchOut))
+		Hatch->Set(true);
+	else
+		Hatch->Set(false);
+
+	if (Operator->GetRawButton(bOperator::bClimbArmOn))
+	{
+		ClimbArm->Set(true);
+		ClimbWheel->Set(1);
+	}
+	if (Operator->GetRawButton(bOperator::bClimbArmOff))
+	{
+		ClimbArm->Set(false);
+		ClimbWheel->Set(0);
+	}
+
+	if (Operator->GetRawButton(bOperator::bClimbBackOff))
+		ClimbBack->Set(DoubleSolenoid::Value::kReverse);
+	else
+		ClimbBack->Set(DoubleSolenoid::Value::kForward);
+	if (Operator->GetRawButton(bOperator::bClimbFrontOff))
+		ClimbFront->Set(DoubleSolenoid::Value::kReverse);
+	else
+		ClimbFront->Set(DoubleSolenoid::Value::kForward);
+
+	if (Operator->GetRawButton(bOperator::bElevatorUp) Elevator1->Set(.5);
+	else if (Operator->GetRawButton(bOperator::bElevatorDown) Elevator1->Set(-.5);
+	else Elevator1->Set(0);
+	if (Operator->GetRawButton(bOperator::bClawUp) Claw->Set(.5);
+	else if (Operator->GetRawButton(bOperator::bClawDown) Claw->Set(-.5);
+	else Claw->Set(0);
+
+
+	if (Operator->GetRawButton(bOperator::bClawIn)) {
+		clawLeftSpeed = .75;
+		clawRightSpeed = .75;
+	}
+	if (Operator->GetRawButton(bOperator::bClawIn)) {
+		clawLeftSpeed = -.75;
+		clawRightSpeed = -.75;
+	}
+	ClawLeft->set(clawLeftSpeed);
+	ClawRight->set(clawRightSpeed);
 }
 
 void Robot::TestPeriodic() {}

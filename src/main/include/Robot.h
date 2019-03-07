@@ -63,9 +63,9 @@ class Robot : public frc::TimedRobot
 	WPI_TalonSRX *DBLeft, *DBLeft2, *DBRight, *DBRight2;
 	WPI_TalonSRX *Claw, *Claw2, *ClawLeft, *ClawRight;
 	WPI_TalonSRX *Elevator1, *Elevator2;
-	WPI_TalonSRX *ClimbArm;
+	WPI_TalonSRX *ClimbWheel;
 	DoubleSolenoid *ClimbFront, *ClimbBack;
-	Solenoid *Hatch, *ClimbWheel;
+	Solenoid *Hatch, *ClimbArm;
 	CANifier *ClawSensor;
 	DifferentialDrive *db;
 	ADXRS450_Gyro *gyro;
@@ -189,14 +189,14 @@ enum bOperator
 	bHatchMid = 7,		 //set mid hatch level
 	bHatchOut = 8,		 //turn on hatch pistons
 	bElevatorHome = 19,  //set to home position
-	bArmHome = 20,		 //
+	bClawHome = 20,		 //
 	bClimbPistons = 14,  //turn on all climb pistons
 	bClimbArmOn = 15,	//turn on arm piston & wheel
 	bClimbFrontOff = 16, //turn off front pistons
-	bArmOff = 17,		 //turn off arm piston & wheel
+	bClimbArmOff = 17,   //turn off arm piston & wheel
 	bClimbBackOff = 18,  //turn off back pistons
 	bClawUp = 1,		 //move claw up
 	bClawDown = 3,		 //move claw down
 	bElevatorUp = 2,	 //move elevator up
-	bElevatorDown = 4,   //move elevator up
+	bElevatorDown = 4,   //move elevator down
 };
