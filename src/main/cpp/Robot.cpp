@@ -159,19 +159,24 @@ void Robot::AutonomousInit()
 
 void Robot::AutonomousPeriodic()
 {
-	if (m_autoSelected == kAutoNameCustom)
-	{
-		// Custom Auto goes here
-	}
-	else
-	{
-		// Default Auto goes here
-	}
+	// if (m_autoSelected == kAutoNameCustom)
+	// {
+	// 	// Custom Auto goes here
+	// }
+	// else
+	// {
+	// 	// Default Auto goes here
+	// }
+	Periodic();
 }
 
 void Robot::TeleopInit() {}
 
 void Robot::TeleopPeriodic()
+{
+	Periodic();
+}
+void Robot::Periodic()
 {
 	if (Driver->GetRawButtonReleased(PS4::R3)){
 		flagSpeed!=flagSpeed;
@@ -278,6 +283,7 @@ void Robot::TeleopPeriodic()
 	// frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
 	frc::SmartDashboard::PutNumber("Speed Flag", flagSpeed);
 	frc::SmartDashboard::PutNumber("Drive Mode",driveState);
+
 	if (Operator->GetRawButton(1)) Hatch->Set(true);
 	else Hatch->Set(false);
 	if (Operator->GetRawButton(4)) ClimbWheel->Set(true);

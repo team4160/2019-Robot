@@ -81,6 +81,7 @@ class Robot : public frc::TimedRobot
 	void TeleopInit() override;
 	void TeleopPeriodic() override;
 	void TestPeriodic() override;
+	void Periodic();
 
   private:
 	frc::SendableChooser<std::string> m_chooser;
@@ -178,22 +179,24 @@ enum kPDP
 
 enum bOperator
 {
-	bCargoCollect = 0,   //set collection level
-	bClawIn = 1,		 //turn on intake wheels
-	bCargoMid = 2,		 //set mid cargo level
-	bCargoLow = 3,		 //set low cargo level
-	bClawOut = 4,		 //turn on output wheels
-	bHatchLow = 5,		 //set low hatch level
-	bHatchMid = 6,		 //set mid hatch level
-	bHatchOut = 7,		 //turn on hatch pistons
-	bElevatorHome = 8,   //set to home position
-	bClimbPistons = 9,   //turn on all climb pistons
-	bClimbArmOn = 10,	//turn on arm piston & wheel
-	bClimbFrontOff = 11, //turn off front pistons
-	bArmOff = 12,		 //turn off arm piston & wheel
-	bClimbBackOff = 13,  //turn off back pistons
-	bClawUp = 14,		 //move claw up
-	bClawDown = 15,		 //move claw down
-	bElevatorUp = 16,	//move elevator up
-	bElevatorDown = 17,  //move elevator up
+	bCargoCollect = 9,   //set collection level
+	bClawIn = 10,		 //turn on intake wheels
+	bCargoMid = 12,		 //set mid cargo level
+	bCargoLow = 11,		 //set low cargo level
+	bClawOut = 13,		 //turn on output wheels
+	bHatchFloor = 5,	 //
+	bHatchLow = 6,		 //set low hatch level
+	bHatchMid = 7,		 //set mid hatch level
+	bHatchOut = 8,		 //turn on hatch pistons
+	bElevatorHome = 19,  //set to home position
+	bArmHome = 20,		 //
+	bClimbPistons = 14,  //turn on all climb pistons
+	bClimbArmOn = 15,	//turn on arm piston & wheel
+	bClimbFrontOff = 16, //turn off front pistons
+	bArmOff = 17,		 //turn off arm piston & wheel
+	bClimbBackOff = 18,  //turn off back pistons
+	bClawUp = 1,		 //move claw up
+	bClawDown = 3,		 //move claw down
+	bElevatorUp = 2,	 //move elevator up
+	bElevatorDown = 4,   //move elevator up
 };
