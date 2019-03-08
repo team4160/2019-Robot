@@ -34,7 +34,7 @@ using namespace frc;
 class Robot : public frc::TimedRobot
 {
   public:
-	static constexpr int kTimeoutMs = 10;	 // change this to 0 if you don't want verification
+	static constexpr int kTimeoutMs = 15;	 // change this to 0 if you don't want verification
 	static constexpr int kEncoderUnit = 4096; // units per encoder rotation
 	static constexpr double turnSensitivity = 0.6;
 
@@ -81,6 +81,8 @@ class Robot : public frc::TimedRobot
 	void TeleopInit() override;
 	void TeleopPeriodic() override;
 	void TestPeriodic() override;
+	void DisabledInit() override;
+	void DisabledPeriodic() override;
 	void Periodic();
 
   private:
