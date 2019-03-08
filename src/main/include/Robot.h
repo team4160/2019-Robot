@@ -165,16 +165,17 @@ enum Attack
 
 enum kPDP
 {
-	DBLeft = 13,
-	DBLeft2 = 0,
-	DBRight = 3,
-	DBRight2 = 2,
-	Claw = 14,
-	ClawLeft = 11,
-	ClawRight = 4,
+	DBLeft = 2,
+	DBLeft2 = 3,
+	DBRight = 0, 
+	DBRight2 = 1,
+	Claw = 12,
+	Claw2 = 13,
+	ClawLeft = 4,
+	ClawRight = 5,
 	Elevator1 = 15,
-	Elevator2 = 0,
-	ClimbArm = 1,
+	Elevator2 = 14,
+	ClimbArm = 7,
 };
 
 enum bOperator
