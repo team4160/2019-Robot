@@ -50,12 +50,12 @@ void Robot::RobotInit()
 	ClawRight = new WPI_TalonSRX(8);
 	Elevator1 = new WPI_TalonSRX(9);
 	Elevator2 = new WPI_TalonSRX(10);
-	ClimbArm = new WPI_TalonSRX(11);
+	ClimbWheel = new WPI_TalonSRX(11);
 
 	ClawSensor = new CANifier(21);
 
 	Hatch = new Solenoid(2); // PCM ID is 0
-	ClimbWheel = new Solenoid(5);
+	ClimbArm = new Solenoid(5);
 	ClimbFront = new DoubleSolenoid(0, 1); // foward,reverse
 	ClimbBack = new DoubleSolenoid(7, 6);
 
@@ -78,7 +78,7 @@ void Robot::RobotInit()
 	MotorBuilder(ClawRight, /*brake*/ true, /*invert*/ true, clawRampTime, clawCurrentLimit, clawMaxCurrent, clawMaxTime);
 	MotorBuilder(Elevator1, /*brake*/ true, /*invert*/ true, elevatorRampTime, elevatorCurrentLimit, elevatorMaxCurrent, elevatorMaxTime);
 	MotorBuilder(Elevator2, /*brake*/ true, /*invert*/ true, elevatorRampTime, elevatorCurrentLimit, elevatorMaxCurrent, elevatorMaxTime);
-	MotorBuilder(ClimbArm, /*brake*/ true, /*invert*/ true, elevatorRampTime, elevatorCurrentLimit, elevatorMaxCurrent, elevatorMaxTime);
+	MotorBuilder(ClimbWheel, /*brake*/ true, /*invert*/ true, elevatorRampTime, elevatorCurrentLimit, elevatorMaxCurrent, elevatorMaxTime);
 
 	// Add CANifier encoder
 	ClawSensor->ConfigVelocityMeasurementPeriod(CANifierVelocityMeasPeriod::Period_100Ms, kTimeoutMs);
@@ -132,7 +132,6 @@ void Robot::RobotPeriodic() {}
 
 void Robot::AutonomousInit()
 {
-
 }
 
 void Robot::AutonomousPeriodic()
@@ -156,7 +155,7 @@ void Robot::Periodic()
 	// driveSpeed = (Driver->GetRawAxis(XB1::XBLeftStickDown));
 	// // turn = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
 	// db->ArcadeDrive(driveSpeed, left, /*squaredInputs*/ true);
-	
+
 	//Curvature
 	if (Driver->GetRawButtonReleased(XB1::RS))
 		flagSpeed != flagSpeed;
@@ -217,24 +216,31 @@ void Robot::Periodic()
 	else
 		ClimbFront->Set(DoubleSolenoid::Value::kForward);
 
-	if (Operator->GetRawButton(bOperator::bElevatorUp) Elevator1->Set(.5);
-	else if (Operator->GetRawButton(bOperator::bElevatorDown) Elevator1->Set(-.5);
-	else Elevator1->Set(0);
-	if (Operator->GetRawButton(bOperator::bClawUp) Claw->Set(.5);
-	else if (Operator->GetRawButton(bOperator::bClawDown) Claw->Set(-.5);
-	else Claw->Set(0);
+	if (Operator->GetRawButton(bOperator::bElevatorUp))
+		Elevator1->Set(.5);
+	else if (Operator->GetRawButton(bOperator::bElevatorDown))
+		Elevator1->Set(-.5);
+	else
+		Elevator1->Set(0);
+	if (Operator->GetRawButton(bOperator::bClawUp))
+		Claw->Set(.5);
+	else if (Operator->GetRawButton(bOperator::bClawDown))
+		Claw->Set(-.5);
+	else
+		Claw->Set(0);
 
-
-	if (Operator->GetRawButton(bOperator::bClawIn)) {
+	if (Operator->GetRawButton(bOperator::bClawIn))
+	{
 		clawLeftSpeed = .75;
 		clawRightSpeed = .75;
 	}
-	if (Operator->GetRawButton(bOperator::bClawIn)) {
+	if (Operator->GetRawButton(bOperator::bClawIn))
+	{
 		clawLeftSpeed = -.75;
 		clawRightSpeed = -.75;
 	}
-	ClawLeft->set(clawLeftSpeed);
-	ClawRight->set(clawRightSpeed);
+	ClawLeft->Set(clawLeftSpeed);
+	ClawRight->Set(clawRightSpeed);
 }
 
 void Robot::TestPeriodic() {}
