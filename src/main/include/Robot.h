@@ -34,7 +34,7 @@ using namespace frc;
 class Robot : public frc::TimedRobot
 {
   public:
-	static constexpr int kTimeoutMs = 15;	 // change this to 0 if you don't want verification
+	static constexpr int kTimeoutMs = 0;	 // change this to 0 if you don't want verification
 	static constexpr int kEncoderUnit = 4096; // units per encoder rotation
 	static constexpr double turnSensitivity = 0.6;
 
@@ -57,7 +57,7 @@ class Robot : public frc::TimedRobot
 	static constexpr int clawForwardLimit = -150; // eg. 5 rotations TODO test the top soft limit
 	static constexpr int clawReverseLimit = -850; // TODO test bottom soft limit
 
-	Joystick *Driver, *Operator;
+	Joystick *Driver, *Operator, *OperatorPanel;
 
 	// Creating the TalonSRXs and sensors
 	WPI_TalonSRX *DBLeft, *DBLeft2, *DBRight, *DBRight2;
@@ -81,8 +81,6 @@ class Robot : public frc::TimedRobot
 	void TeleopInit() override;
 	void TeleopPeriodic() override;
 	void TestPeriodic() override;
-	void DisabledInit() override;
-	void DisabledPeriodic() override;
 	void Periodic();
 
   private:

@@ -91,13 +91,15 @@ void Robot::RobotInit()
 	Claw->ConfigSelectedFeedbackSensor(FeedbackDevice::RemoteSensor0, /*PID_PRIMARY*/ 0, kTimeoutMs);
 
 	// TODO Claw PID See 10.1 set P = 1 I = 10 + maybe don't override but use website for now Claw->Config_kP(/*slot*/ 0, 1, kTimeoutMs);
+	Claw->Config_kP(/*slot*/ 0, 0.3, kTimeoutMs);
 	// Claw->Config_kD(/*slot*/ 0, 5, kTimeoutMs);
+	Claw->SetSelectedSensorPosition(0,0,0);
 
 	// TODO create soft encoder limits when you found positions
-	// 	Claw->ConfigForwardSoftLimitThreshold(clawForwardLimit, kTimeoutMs);
-	// Claw->ConfigForwardSoftLimitEnable(true, kTimeoutMs);
+	Claw->ConfigReverseSoftLimitThreshold(200, kTimeoutMs);
+	Claw->ConfigReverseSoftLimitEnable(true, kTimeoutMs);
 	// Claw->ConfigReverseSoftLimitThreshold(clawReverseLimit, kTimeoutMs);
-	// Claw->ConfigReverseSoftLimitEnable(true, kTimeoutMs);
+	Claw->ConfigForwardSoftLimitEnable(false, kTimeoutMs);
 
 	// elevator sensors
 	Elevator1->ConfigRemoteFeedbackFilter(0x00, RemoteSensorSource::RemoteSensorSource_Off, /*REMOTE*/ 0, kTimeoutMs); //no remote sensors
@@ -105,14 +107,16 @@ void Robot::RobotInit()
 	Elevator1->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Absolute, 0, kTimeoutMs);
 	// Elevator1->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
 
-	// Elevator1->Config_kP(/*slot*/ 0, 0.5, kTimeoutMs);
+	Elevator1->SetSensorPhase(true);
+	Elevator1->SetSelectedSensorPosition(0,0,0);
+	Elevator1->Config_kP(/*slot*/ 0, 0.3, kTimeoutMs);
 	// Elevator1->Config_kD(/*slot*/ 0, 5, kTimeoutMs);
 
 	// Elevator1->SetSelectedSensorPosition(0, /*REMOTE*/ 0, /*TimeOut*/ 0);
 	// Elevator1->ConfigForwardSoftLimitThreshold(-600, 0);
-	// Elevator1->ConfigForwardSoftLimitEnable(true, 0);
-	// Elevator1->ConfigReverseSoftLimitThreshold(-31000, kTimeoutMs);
-	// Elevator1->ConfigReverseSoftLimitEnable(true, kTimeoutMs);
+	Elevator1->ConfigForwardSoftLimitEnable(false, 0);
+	Elevator1->ConfigReverseSoftLimitThreshold(300, 0);
+	Elevator1->ConfigReverseSoftLimitEnable(true, 0);
 
 	// Elevator1->ConfigForwardSoftLimitEnable(false, 0);
 	// Elevator1->ConfigReverseSoftLimitEnable(false, 0);
@@ -148,7 +152,11 @@ void Robot::TeleopPeriodic()
 void Robot::Periodic()
 {
 	//Tank
-	db->TankDrive(Driver->GetRawAxis(PS4::PSLeftStickDown), Driver->GetRawAxis(PS4::PSRightStickRight));
+	left = (Driver->GetRawAxis(PS4::PSLeftStickDown));
+	left = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
+	turn = (Driver->GetRawAxis(PS4::PSRightStickDown));
+	turn = ((turnSensitivity * turn * turn * turn) + (1 - turnSensitivity) * turn);
+	db->TankDrive(left, turn);
 
 	//Arcade
 	// left = (Driver->GetRawAxis(XB1::XBRightStickDown));
@@ -170,24 +178,24 @@ void Robot::Periodic()
 	// frc::SmartDashboard::PutNumber("Drive Right Pulse", DBRight->GetSensorCollection().GetPulseWidthPosition());
 	// frc::SmartDashboard::PutNumber("Drive Right Quad", DBRight->GetSensorCollection().GetQuadraturePosition());
 	frc::SmartDashboard::PutNumber("Elevator", Elevator1->GetSelectedSensorPosition(0));
-	frc::SmartDashboard::PutNumber("Elevator Pulse", Elevator1->GetSensorCollection().GetPulseWidthPosition());
-	frc::SmartDashboard::PutNumber("Elevator Quad", Elevator1->GetSensorCollection().GetQuadraturePosition());
+	// frc::SmartDashboard::PutNumber("Elevator Pulse", Elevator1->GetSensorCollection().GetPulseWidthPosition());
+	// frc::SmartDashboard::PutNumber("Elevator Quad", Elevator1->GetSensorCollection().GetQuadraturePosition());
 	// frc::SmartDashboard::PutNumber("Elevator Reverse Limit", Elevator1->GetSensorCollection().IsRevLimitSwitchClosed());
 	frc::SmartDashboard::PutNumber("Claw", Claw->GetSelectedSensorPosition(0));
-	frc::SmartDashboard::PutNumber("Claw Pulse", Claw->GetSensorCollection().GetPulseWidthPosition());
-	frc::SmartDashboard::PutNumber("Claw Quad", Claw->GetSensorCollection().GetQuadraturePosition());
+	// frc::SmartDashboard::PutNumber("Claw Pulse", Claw->GetSensorCollection().GetPulseWidthPosition());
+	// frc::SmartDashboard::PutNumber("Claw Quad", Claw->GetSensorCollection().GetQuadraturePosition());
 	// frc::SmartDashboard::PutNumber("Claw Forward Limit", ClawSensor->GetGeneralInput(ClawSensor->LIMF));
 
-	frc::SmartDashboard::PutNumber("DBLeft", PDP->GetCurrent(kPDP::DBLeft));
-	frc::SmartDashboard::PutNumber("DBLeft2", PDP->GetCurrent(kPDP::DBLeft2));
-	frc::SmartDashboard::PutNumber("DBRight", PDP->GetCurrent(kPDP::DBRight));
-	frc::SmartDashboard::PutNumber("DBRight2", PDP->GetCurrent(kPDP::DBRight2));
-	frc::SmartDashboard::PutNumber("Elevator1", PDP->GetCurrent(kPDP::Elevator1));
-	frc::SmartDashboard::PutNumber("Elevator2", PDP->GetCurrent(kPDP::Elevator2));
-	frc::SmartDashboard::PutNumber("ClimbArm", PDP->GetCurrent(kPDP::ClimbArm));
-	frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
-	frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
-	frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
+	// frc::SmartDashboard::PutNumber("DBLeft", PDP->GetCurrent(kPDP::DBLeft));
+	// frc::SmartDashboard::PutNumber("DBLeft2", PDP->GetCurrent(kPDP::DBLeft2));
+	// frc::SmartDashboard::PutNumber("DBRight", PDP->GetCurrent(kPDP::DBRight));
+	// frc::SmartDashboard::PutNumber("DBRight2", PDP->GetCurrent(kPDP::DBRight2));
+	// frc::SmartDashboard::PutNumber("Elevator1", PDP->GetCurrent(kPDP::Elevator1));
+	// frc::SmartDashboard::PutNumber("Elevator2", PDP->GetCurrent(kPDP::Elevator2));
+	// frc::SmartDashboard::PutNumber("ClimbArm", PDP->GetCurrent(kPDP::ClimbArm));
+	// frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
+	// frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
+	// frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
 	frc::SmartDashboard::PutNumber("Speed Flag", flagSpeed);
 	frc::SmartDashboard::PutNumber("Drive Mode", driveState);
 
