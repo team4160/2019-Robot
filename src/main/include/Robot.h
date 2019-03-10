@@ -34,7 +34,7 @@ using namespace frc;
 class Robot : public frc::TimedRobot
 {
   public:
-	static constexpr int kTimeoutMs = 0;	 // change this to 0 if you don't want verification
+	static constexpr int kTimeoutMs = 0;	  // change this to 0 if you don't want verification
 	static constexpr int kEncoderUnit = 4096; // units per encoder rotation
 	static constexpr double turnSensitivity = 0.6;
 
@@ -108,6 +108,7 @@ class Robot : public frc::TimedRobot
 	bool flagElevatorHigh = false;
 	bool flagClawUp = false;
 	bool flagSpeed = true;
+	bool flagOperatorMan = true;
 };
 
 enum PS4
@@ -167,7 +168,7 @@ enum kPDP
 {
 	DBLeft = 2,
 	DBLeft2 = 3,
-	DBRight = 0, 
+	DBRight = 0,
 	DBRight2 = 1,
 	Claw = 12,
 	Claw2 = 13,

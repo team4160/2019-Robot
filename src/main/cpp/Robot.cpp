@@ -91,9 +91,9 @@ void Robot::RobotInit()
 	Claw->ConfigSelectedFeedbackSensor(FeedbackDevice::RemoteSensor0, /*PID_PRIMARY*/ 0, kTimeoutMs);
 
 	// TODO Claw PID See 10.1 set P = 1 I = 10 + maybe don't override but use website for now Claw->Config_kP(/*slot*/ 0, 1, kTimeoutMs);
-	Claw->Config_kP(/*slot*/ 0, 0.3, kTimeoutMs);
-	// Claw->Config_kD(/*slot*/ 0, 5, kTimeoutMs);
-	Claw->SetSelectedSensorPosition(0,0,0);
+	Claw->Config_kP(/*slot*/ 0, 0.5, kTimeoutMs);
+	Claw->Config_kD(/*slot*/ 0, 5, kTimeoutMs);
+	Claw->SetSelectedSensorPosition(0, 0, 0);
 
 	// TODO create soft encoder limits when you found positions
 	Claw->ConfigReverseSoftLimitThreshold(200, kTimeoutMs);
@@ -108,9 +108,10 @@ void Robot::RobotInit()
 	// Elevator1->ConfigReverseLimitSwitchSource(LimitSwitchSource_FeedbackConnector, LimitSwitchNormal_NormallyOpen, 0);
 
 	Elevator1->SetSensorPhase(true);
-	Elevator1->SetSelectedSensorPosition(0,0,0);
-	Elevator1->Config_kP(/*slot*/ 0, 0.3, kTimeoutMs);
-	// Elevator1->Config_kD(/*slot*/ 0, 5, kTimeoutMs);
+	Elevator1->SetSelectedSensorPosition(0, 0, 0);
+	Elevator1->Config_kP(/*slot*/ 0, 0.45, kTimeoutMs);
+	Elevator1->Config_kD(/*slot*/ 0, 5, kTimeoutMs);
+	Elevator1->Config_kF(/*slot*/ 0, 0.045, kTimeoutMs);
 
 	// Elevator1->SetSelectedSensorPosition(0, /*REMOTE*/ 0, /*TimeOut*/ 0);
 	// Elevator1->ConfigForwardSoftLimitThreshold(-600, 0);
@@ -152,11 +153,11 @@ void Robot::TeleopPeriodic()
 void Robot::Periodic()
 {
 	//Tank
-	left = (Driver->GetRawAxis(PS4::PSLeftStickDown));
-	left = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
-	turn = (Driver->GetRawAxis(PS4::PSRightStickDown));
-	turn = ((turnSensitivity * turn * turn * turn) + (1 - turnSensitivity) * turn);
-	db->TankDrive(left, turn);
+	// left = (Driver->GetRawAxis(PS4::PSLeftStickDown));
+	// left = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
+	// turn = (Driver->GetRawAxis(PS4::PSRightStickDown));
+	// turn = ((turnSensitivity * turn * turn * turn) + (1 - turnSensitivity) * turn);
+	// db->TankDrive(left, turn);
 
 	//Arcade
 	// left = (Driver->GetRawAxis(XB1::XBRightStickDown));
@@ -165,9 +166,9 @@ void Robot::Periodic()
 	// db->ArcadeDrive(driveSpeed, left, /*squaredInputs*/ true);
 
 	//Curvature
-	// if (Driver->GetRawButtonReleased(XB1::RS))
-	// 	flagSpeed != flagSpeed;
-	// db->CurvatureDrive(Driver->GetRawAxis(XB1::XBLeftStickDown), Driver->GetRawAxis(XB1::XBRightStickDown), flagSpeed);
+	if (Driver->GetRawButtonReleased(PS4::Share))
+		flagSpeed != flagSpeed;
+	db->CurvatureDrive(Driver->GetRawAxis(PS4::PSRightStickDown), Driver->GetRawAxis(PS4::PSLeftStickRight)*-1, flagSpeed);
 
 	// frc::SmartDashboard::PutNumber("Gyroscope", gyro->GetAngle());
 	// frc::SmartDashboard::PutNumber("POV", Operator->GetPOV());
@@ -258,9 +259,23 @@ void Robot::Periodic()
 		Hatch->Set(true);
 	else
 		Hatch->Set(false);
-	
+
 	Elevator1->Set(Operator->GetRawAxis(XB1::XBLeftStickDown)*-0.4);
 	Claw->Set(Operator->GetRawAxis(XB1::XBRightStickDown)*0.4);
+
+	// if (Operator->GetRawButton(XB1::A))
+	// 	Elevator1->Set(ControlMode::Position, 1000);
+	// else
+	// 	Elevator1->Set(ControlMode::Position, 4300);
+
+	// if (Operator->GetRawButton(XB1::B))
+	// 	Claw->Set(ControlMode::Position, 2200);
+	// else
+	// 	Claw->Set(ControlMode::Position, 500);
+	//CARGO ship:  9000 elevator, 7400 claw
+	//CARGO rocket: 95000 e, 6700 c
+
+
 }
 
 void Robot::TestPeriodic() {}
