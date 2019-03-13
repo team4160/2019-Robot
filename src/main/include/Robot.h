@@ -91,16 +91,18 @@ class Robot : public frc::TimedRobot
 
 	unsigned int driveState;
 
-	double left;
-	double right;
-	double turn;
-	double driveSpeed;
-	double clawLeftSpeed;
-	double clawRightSpeed;
-	double ClawSpeed;
-	double ClawHold;
-	double ElevatorSpeed;
+	double left = 0;
+	double right = 0;
+	double turn = 0;
+	double driveSpeed = 0;
+	double clawLeftSpeed = 0;
+	double clawRightSpeed = 0;
+	double ClawSpeed = 0;
+	double ClawHold = 0;
+	double ElevatorHold = 0;
 
+	bool ClawFirstRun = false;
+	bool ElevatorFirstRun = false;
 	bool isClawHomed = false;
 	bool isElevatorHomed = false;
 	bool flagElevatorDown = false;
@@ -166,6 +168,7 @@ enum Attack
 
 enum kPDP
 {
+	//comp
 	DBLeft = 2,
 	DBLeft2 = 3,
 	DBRight = 0,

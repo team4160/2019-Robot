@@ -168,7 +168,7 @@ void Robot::Periodic()
 	//Curvature
 	if (Driver->GetRawButtonReleased(PS4::Share))
 		flagSpeed != flagSpeed;
-	db->CurvatureDrive(Driver->GetRawAxis(PS4::PSRightStickDown), Driver->GetRawAxis(PS4::PSLeftStickRight)*-1, flagSpeed);
+	db->CurvatureDrive(Driver->GetRawAxis(PS4::PSRightStickDown), Driver->GetRawAxis(PS4::PSLeftStickRight) * -1, flagSpeed);
 
 	// frc::SmartDashboard::PutNumber("Gyroscope", gyro->GetAngle());
 	// frc::SmartDashboard::PutNumber("POV", Operator->GetPOV());
@@ -200,82 +200,57 @@ void Robot::Periodic()
 	frc::SmartDashboard::PutNumber("Speed Flag", flagSpeed);
 	frc::SmartDashboard::PutNumber("Drive Mode", driveState);
 
-	// if (Operator->GetRawButton(bOperator::bHatchOut))
-	// 	Hatch->Set(true);
-	// else
-	// 	Hatch->Set(false);
-
-	// if (Operator->GetRawButton(bOperator::bClimbArmOn))
-	// {
-	// 	ClimbArm->Set(true);
-	// 	ClimbWheel->Set(1);
-	// }
-	// if (Operator->GetRawButton(bOperator::bClimbArmOff))
-	// {
-	// 	ClimbArm->Set(false);
-	// 	ClimbWheel->Set(0);
-	// }
-
-	// if (Operator->GetRawButton(bOperator::bClimbBackOff))
-	// 	ClimbBack->Set(DoubleSolenoid::Value::kReverse);
-	// else
-	// 	ClimbBack->Set(DoubleSolenoid::Value::kForward);
-	// if (Operator->GetRawButton(bOperator::bClimbFrontOff))
-	// 	ClimbFront->Set(DoubleSolenoid::Value::kReverse);
-	// else
-	// 	ClimbFront->Set(DoubleSolenoid::Value::kForward);
-
-	// if (Operator->GetRawButton(bOperator::bElevatorUp))
-	// 	Elevator1->Set(.5);
-	// else if (Operator->GetRawButton(bOperator::bElevatorDown))
-	// 	Elevator1->Set(-.5);
-	// else
-	// 	Elevator1->Set(0);
-	// if (Operator->GetRawButton(bOperator::bClawUp))
-	// 	Claw->Set(.5);
-	// else if (Operator->GetRawButton(bOperator::bClawDown))
-	// 	Claw->Set(-.5);
-	// else
-	// 	Claw->Set(0);
-
-	// if (Operator->GetRawButton(bOperator::bClawIn))
-	// {
-	// 	clawLeftSpeed = .75;
-	// 	clawRightSpeed = .75;
-	// }
-	// if (Operator->GetRawButton(bOperator::bClawIn))
-	// {
-	// 	clawLeftSpeed = -.75;
-	// 	clawRightSpeed = -.75;
-	// }
-	// ClawLeft->Set(clawLeftSpeed);
-	// ClawRight->Set(clawRightSpeed);
-
+	//Claw intake
 	ClawSpeed = Operator->GetRawAxis(XB1::RIn) - Operator->GetRawAxis(XB1::LIn);
 	ClawLeft->Set(ClawSpeed);
 	ClawRight->Set(ClawSpeed);
 
+	//Panel ejection
 	if (Operator->GetRawButton(XB1::RB))
 		Hatch->Set(true);
 	else
 		Hatch->Set(false);
 
-	Elevator1->Set(Operator->GetRawAxis(XB1::XBLeftStickDown)*-0.4);
-	Claw->Set(Operator->GetRawAxis(XB1::XBRightStickDown)*0.4);
+	ClawHold = Operator->GetRawAxis(XB1::XBRightStickDown);
+	if (ClawHold < -0.05 || ClawHold > 0.05)
+	{
+		Claw->Set(ControlMode::PercentOutput, ClawHold * 0.4);
+		ClawFirstRun = true;
+	}
+	else
+	{
+		if (ClawFirstRun)
+		{
+			Claw->Set(ControlMode::Position, Claw->GetSelectedSensorPosition(0));
+			ClawFirstRun = false;
+		}
+	}
 
-	// if (Operator->GetRawButton(XB1::A))
-	// 	Elevator1->Set(ControlMode::Position, 1000);
-	// else
-	// 	Elevator1->Set(ControlMode::Position, 4300);
+	ElevatorHold = Operator->GetRawAxis(XB1::XBLeftStickDown) * -1;
+	if (ElevatorHold < -0.05 || ElevatorHold > 0.05)
+	{
+		Elevator1->Set(ControlMode::PercentOutput, ElevatorHold * 0.4);
+		ElevatorFirstRun = true;
+	}
+	else
+	{
+		if (ElevatorFirstRun)
+		{
+			Elevator1->Set(ControlMode::Position, Elevator1->GetSelectedSensorPosition(0));
+			ElevatorFirstRun = false;
+		}
+	}
+	if (Operator->GetRawButton(XB1::A))
+		Elevator1->Set(ControlMode::Position, 1000);
+	if (Operator->GetRawButton(XB1::X))
+		Elevator1->Set(ControlMode::Position, 4300);
+	if (Operator->GetRawButton(XB1::B))
+		Claw->Set(ControlMode::Position, 500);
+	if (Operator->GetRawButton(XB1::Y))
+		Claw->Set(ControlMode::Position, 2200);
 
-	// if (Operator->GetRawButton(XB1::B))
-	// 	Claw->Set(ControlMode::Position, 2200);
-	// else
-	// 	Claw->Set(ControlMode::Position, 500);
 	//CARGO ship:  9000 elevator, 7400 claw
 	//CARGO rocket: 95000 e, 6700 c
-
-
 }
 
 void Robot::TestPeriodic() {}
