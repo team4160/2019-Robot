@@ -137,6 +137,8 @@ void Robot::RobotPeriodic() {}
 
 void Robot::AutonomousInit()
 {
+	Claw->Set(ControlMode::PercentOutput, 0);
+	Elevator1->Set(ControlMode::PercentOutput, 0);
 }
 
 void Robot::AutonomousPeriodic()
@@ -144,7 +146,11 @@ void Robot::AutonomousPeriodic()
 	Periodic();
 }
 
-void Robot::TeleopInit() {}
+void Robot::TeleopInit()
+{
+	Claw->Set(ControlMode::PercentOutput, 0);
+	Elevator1->Set(ControlMode::PercentOutput, 0);
+}
 
 void Robot::TeleopPeriodic()
 {
@@ -155,20 +161,18 @@ void Robot::Periodic()
 	//Tank
 	// left = (Driver->GetRawAxis(PS4::PSLeftStickDown));
 	// left = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
-	// turn = (Driver->GetRawAxis(PS4::PSRightStickDown));
-	// turn = ((turnSensitivity * turn * turn * turn) + (1 - turnSensitivity) * turn);
-	// db->TankDrive(left, turn);
+	// right = (Driver->GetRawAxis(PS4::PSRightStickDown));
+	// right = ((turnSensitivity * right * right * right) + (1 - turnSensitivity) * right);
+	// db->TankDrive(left, turn, false);
 
 	//Arcade
-	// left = (Driver->GetRawAxis(XB1::XBRightStickDown));
-	// driveSpeed = (Driver->GetRawAxis(XB1::XBLeftStickDown));
-	// // turn = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
-	// db->ArcadeDrive(driveSpeed, left, /*squaredInputs*/ true);
+	// driveSpeed = (Driver->GetRawAxis(PS4::PSRightStickDown));
+	// left = (Driver->GetRawAxis(PS4::PSLeftStickRight));
+	// left = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
+	// db->ArcadeDrive(driveSpeed, left, /*squaredInputs*/ false);
 
 	//Curvature
-	if (Driver->GetRawButtonReleased(PS4::Share))
-		flagSpeed != flagSpeed;
-	db->CurvatureDrive(Driver->GetRawAxis(PS4::PSRightStickDown), Driver->GetRawAxis(PS4::PSLeftStickRight) * -1, flagSpeed);
+	db->CurvatureDrive(Driver->GetRawAxis(PS4::PSRightStickDown), Driver->GetRawAxis(PS4::PSLeftStickRight) * -1, true);
 
 	// frc::SmartDashboard::PutNumber("Gyroscope", gyro->GetAngle());
 	// frc::SmartDashboard::PutNumber("POV", Operator->GetPOV());
@@ -197,11 +201,10 @@ void Robot::Periodic()
 	// frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
 	// frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
 	// frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
-	frc::SmartDashboard::PutNumber("Speed Flag", flagSpeed);
 	frc::SmartDashboard::PutNumber("Drive Mode", driveState);
 
 	//Claw intake
-	ClawSpeed = Operator->GetRawAxis(XB1::RIn) - Operator->GetRawAxis(XB1::LIn);
+	ClawSpeed = Operator->GetRawAxis(XB1::LIn) - Operator->GetRawAxis(XB1::RIn);
 	ClawLeft->Set(ClawSpeed);
 	ClawRight->Set(ClawSpeed);
 
@@ -214,7 +217,7 @@ void Robot::Periodic()
 	ClawHold = Operator->GetRawAxis(XB1::XBRightStickDown);
 	if (ClawHold < -0.05 || ClawHold > 0.05)
 	{
-		Claw->Set(ControlMode::PercentOutput, ClawHold * 0.4);
+		Claw->Set(ControlMode::PercentOutput, ClawHold * 0.5);
 		ClawFirstRun = true;
 	}
 	else
@@ -229,7 +232,7 @@ void Robot::Periodic()
 	ElevatorHold = Operator->GetRawAxis(XB1::XBLeftStickDown) * -1;
 	if (ElevatorHold < -0.05 || ElevatorHold > 0.05)
 	{
-		Elevator1->Set(ControlMode::PercentOutput, ElevatorHold * 0.4);
+		Elevator1->Set(ControlMode::PercentOutput, ElevatorHold * 0.5);
 		ElevatorFirstRun = true;
 	}
 	else

@@ -40,22 +40,19 @@ class Robot : public frc::TimedRobot
 
 	// Setting up the TalonSRX's config
 	static constexpr double driveRampTime = 0.2;
-	static constexpr int driveCurrentLimit = 0;
-	static constexpr int driveMaxCurrent = 0;
-	static constexpr int driveMaxTime = 0;
+	static constexpr int driveCurrentLimit = 20;
+	static constexpr int driveMaxCurrent = 30;
+	static constexpr int driveMaxTime = 100;
 
 	static constexpr double clawRampTime = 0;
-	static constexpr int clawCurrentLimit = 20;
-	static constexpr int clawMaxCurrent = 40; // claw shouldn't need a lot of current
+	static constexpr int clawCurrentLimit = 10;
+	static constexpr int clawMaxCurrent = 20; // claw shouldn't need a lot of current
 	static constexpr int clawMaxTime = 100;
 
 	static constexpr double elevatorRampTime = 0.3;
-	static constexpr int elevatorCurrentLimit = 5;
-	static constexpr int elevatorMaxCurrent = 10;
+	static constexpr int elevatorCurrentLimit = 10;
+	static constexpr int elevatorMaxCurrent = 20;
 	static constexpr int elevatorMaxTime = 100;
-
-	static constexpr int clawForwardLimit = -150; // eg. 5 rotations TODO test the top soft limit
-	static constexpr int clawReverseLimit = -850; // TODO test bottom soft limit
 
 	Joystick *Driver, *Operator, *OperatorPanel;
 
@@ -89,28 +86,18 @@ class Robot : public frc::TimedRobot
 	const std::string kAutoNameCustom = "My Auto";
 	std::string m_autoSelected;
 
-	unsigned int driveState;
+	unsigned int driveState; //no negitive values
 
 	double left = 0;
 	double right = 0;
 	double turn = 0;
 	double driveSpeed = 0;
-	double clawLeftSpeed = 0;
-	double clawRightSpeed = 0;
 	double ClawSpeed = 0;
 	double ClawHold = 0;
 	double ElevatorHold = 0;
 
 	bool ClawFirstRun = false;
 	bool ElevatorFirstRun = false;
-	bool isClawHomed = false;
-	bool isElevatorHomed = false;
-	bool flagElevatorDown = false;
-	bool flagElevatorMid = false;
-	bool flagElevatorHigh = false;
-	bool flagClawUp = false;
-	bool flagSpeed = true;
-	bool flagOperatorMan = true;
 };
 
 enum PS4
