@@ -61,6 +61,7 @@ class Robot : public frc::TimedRobot
 	WPI_TalonSRX *Claw, *Claw2, *ClawLeft, *ClawRight;
 	WPI_TalonSRX *Elevator1, *Elevator2;
 	WPI_TalonSRX *ClimbWheel;
+	Compressor *theCompressor;
 	DoubleSolenoid *ClimbFront, *ClimbBack;
 	Solenoid *Hatch, *ClimbArm;
 	CANifier *ClawSensor;

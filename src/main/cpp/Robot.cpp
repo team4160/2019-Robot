@@ -54,6 +54,8 @@ void Robot::RobotInit()
 
 	ClawSensor = new CANifier(21);
 
+	theCompressor = new Compressor(0);
+
 	Hatch = new Solenoid(2); // PCM ID is 0
 	ClimbArm = new Solenoid(5);
 	ClimbFront = new DoubleSolenoid(0, 1); // foward,reverse
@@ -139,17 +141,29 @@ void Robot::AutonomousInit()
 {
 	Claw->Set(ControlMode::PercentOutput, 0);
 	Elevator1->Set(ControlMode::PercentOutput, 0);
+	theCompressor->Start();
 }
 
 void Robot::AutonomousPeriodic()
 {
 	Periodic();
+	// if (Operator->GetRawButton(bOperator::bClimbBackOff))
+	// {
+	// 	ClimbBack->Set(DoubleSolenoid::Value::kReverse);
+	// 	ClimbFront->Set(DoubleSolenoid::Value::kReverse);
+	// }
+	// else
+	// {
+	// 	ClimbBack->Set(DoubleSolenoid::Value::kForward);
+	// 	ClimbFront->Set(DoubleSolenoid::Value::kForward);
+	// }
 }
 
 void Robot::TeleopInit()
 {
 	Claw->Set(ControlMode::PercentOutput, 0);
 	Elevator1->Set(ControlMode::PercentOutput, 0);
+	theCompressor->Stop();
 }
 
 void Robot::TeleopPeriodic()
