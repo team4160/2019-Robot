@@ -34,6 +34,7 @@ void Robot::RobotInit()
 	// Setting the Controllers
 	Driver = new Joystick(0);
 	Operator = new Joystick(1);
+	OperatorPanel = new Joystick(2);
 
 	gyro = new ADXRS450_Gyro(SPI::kOnboardCS0);
 	PDP = new PowerDistributionPanel(0);
@@ -172,12 +173,13 @@ void Robot::TeleopPeriodic()
 }
 void Robot::Periodic()
 {
+	//DRIVER CONTROLS
 	//Tank
 	// left = (Driver->GetRawAxis(PS4::PSLeftStickDown));
 	// left = ((turnSensitivity * left * left * left) + (1 - turnSensitivity) * left);
 	// right = (Driver->GetRawAxis(PS4::PSRightStickDown));
 	// right = ((turnSensitivity * right * right * right) + (1 - turnSensitivity) * right);
-	// db->TankDrive(left, turn, false);
+	// db->TankDrive(left, right, false);
 
 	//Arcade
 	// driveSpeed = (Driver->GetRawAxis(PS4::PSRightStickDown));
@@ -188,8 +190,9 @@ void Robot::Periodic()
 	//Curvature
 	db->CurvatureDrive(Driver->GetRawAxis(PS4::PSRightStickDown), Driver->GetRawAxis(PS4::PSLeftStickRight) * -1, true);
 
+	//SMART DASHBOARD
 	// frc::SmartDashboard::PutNumber("Gyroscope", gyro->GetAngle());
-	// frc::SmartDashboard::PutNumber("POV", Operator->GetPOV());
+	frc::SmartDashboard::PutNumber("POV", Operator->GetPOV());
 	// frc::SmartDashboard::PutNumber("Drive Left", DBLeft->GetSelectedSensorPosition(0));
 	// frc::SmartDashboard::PutNumber("Drive Left Pulse", DBLeft->GetSensorCollection().GetPulseWidthPosition());
 	// frc::SmartDashboard::PutNumber("Drive Left Quad", DBLeft->GetSensorCollection().GetQuadraturePosition());
@@ -217,6 +220,7 @@ void Robot::Periodic()
 	// frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
 	frc::SmartDashboard::PutNumber("Drive Mode", driveState);
 
+	//OPERATOR CONTROLS
 	//Claw intake
 	ClawSpeed = Operator->GetRawAxis(XB1::LIn) - Operator->GetRawAxis(XB1::RIn);
 	ClawLeft->Set(ClawSpeed);
@@ -266,8 +270,49 @@ void Robot::Periodic()
 	if (Operator->GetRawButton(XB1::Y))
 		Claw->Set(ControlMode::Position, 2200);
 
-	//CARGO ship:  9000 elevator, 7400 claw
-	//CARGO rocket: 95000 e, 6700 c
+//TODO all of them need claw first to a certain degree
+	//CARGO ship
+	if (OperatorPanel->GetRawButton(bOperator::bCargoShip)){
+		Elevator1->Set(ControlMode::Position, 7300);
+		Claw->Set(ControlMode::Position, 6000);
+	}
+	//CARGO rocket mid TODO change angle of claw, need actual rocket
+	if (OperatorPanel->GetRawButton(bOperator::bCargoMid)){
+		Elevator1->Set(ControlMode::Position, 8000);
+		Claw->Set(ControlMode::Position, 6700);
+	}
+	//CARGO rocket low
+	if (OperatorPanel->GetRawButton(bOperator::bCargoLow)){
+		Elevator1->Set(ControlMode::Position, 4800);
+		Claw->Set(ControlMode::Position, 4700);
+	}
+	//CARGO player station
+	if (OperatorPanel->GetRawButton(bOperator::bCargoCollect)){
+		Elevator1->Set(ControlMode::Position, 3400);
+		Claw->Set(ControlMode::Position, 2000);
+	}
+	//HATCH low/ship
+	if (OperatorPanel->GetRawButton(bOperator::bHatchLow)){
+		Claw->Set(ControlMode::Position, 400);
+		Wait(.5);
+		Elevator1->Set(ControlMode::Position, 1400);
+	}
+	//HATCH player station
+	if (OperatorPanel->GetRawButton(bOperator::bHatchCollect)){
+		Elevator1->Set(ControlMode::Position, 2000);
+		Claw->Set(ControlMode::Position, 1400);
+	}
+	if (OperatorPanel->GetRawButton(bOperator::bHome)){
+		Claw->Set(ControlMode::Position, 3000);
+		Wait(2);
+		Elevator1->Set(ControlMode::Position, 500);
+		Claw->Set(ControlMode::Position, 500);
+	}
+	//HATCH mid
+	// if (Operator->GetRawButton(bOperator::bHatchMid)){
+	// 	Elevator1->Set(ControlMode::Position, 1400);
+	// 	Claw->Set(ControlMode::Position, 600);
+	// }
 }
 
 void Robot::TestPeriodic() {}
