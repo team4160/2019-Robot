@@ -69,7 +69,7 @@ class Robot : public frc::TimedRobot
 	ADXRS450_Gyro *gyro;
 	BuiltInAccelerometer *accel;
 	PowerDistributionPanel *PDP;
-	// Timer *mytimer;
+	Timer *mytimer;
 
 	void MotorBuilder(WPI_TalonSRX *srx, bool brake, bool inverted, double RampTime, int CurrentLimit, int MaxCurrent, int MaxTime);
 	void RobotInit() override;

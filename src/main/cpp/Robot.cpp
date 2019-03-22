@@ -261,55 +261,78 @@ void Robot::Periodic()
 			ElevatorFirstRun = false;
 		}
 	}
-	if (Operator->GetRawButton(XB1::A))
-		Elevator1->Set(ControlMode::Position, 1000);
-	if (Operator->GetRawButton(XB1::X))
-		Elevator1->Set(ControlMode::Position, 4300);
-	if (Operator->GetRawButton(XB1::B))
-		Claw->Set(ControlMode::Position, 500);
-	if (Operator->GetRawButton(XB1::Y))
-		Claw->Set(ControlMode::Position, 2200);
+	// if (Operator->GetRawButton(XB1::A))
+	// 	Elevator1->Set(ControlMode::Position, 1000);
+	// if (Operator->GetRawButton(XB1::X))
+	// 	Elevator1->Set(ControlMode::Position, 4300);
+	// if (Operator->GetRawButton(XB1::B))
+	// 	Claw->Set(ControlMode::Position, 500);
+	// if (Operator->GetRawButton(XB1::Y))
+	// 	Claw->Set(ControlMode::Position, 2200);
 
-//TODO all of them need claw first to a certain degree
-	//CARGO ship
-	if (OperatorPanel->GetRawButton(bOperator::bCargoShip)){
+	//TODO all of them need claw first to a certain degree
+	//CARGO cargoship
+	if (Operator->GetPOV() == 90)
+	{
 		Elevator1->Set(ControlMode::Position, 7300);
 		Claw->Set(ControlMode::Position, 6000);
 	}
 	//CARGO rocket mid TODO change angle of claw, need actual rocket
-	if (OperatorPanel->GetRawButton(bOperator::bCargoMid)){
+	if (Operator->GetPOV() == 0)
+	{
 		Elevator1->Set(ControlMode::Position, 8000);
 		Claw->Set(ControlMode::Position, 6700);
 	}
-	//CARGO rocket low
-	if (OperatorPanel->GetRawButton(bOperator::bCargoLow)){
+	//CARGO rocket low -- xb1 bottom keypad
+	if (Operator->GetPOV() == 180)
+	{
 		Elevator1->Set(ControlMode::Position, 4800);
 		Claw->Set(ControlMode::Position, 4700);
 	}
-	//CARGO player station
-	if (OperatorPanel->GetRawButton(bOperator::bCargoCollect)){
+	//CARGO player station -- xb1 left keypad
+	if (Operator->GetPOV() == 270)
+	{
 		Elevator1->Set(ControlMode::Position, 3400);
 		Claw->Set(ControlMode::Position, 2000);
+		//CARGO intake floor --xb1 lb
 	}
-	//HATCH low/ship
-	if (OperatorPanel->GetRawButton(bOperator::bHatchLow)){
+	//HATCH low rocket/cargoship -- xb1 a
+	if (Operator->GetRawButton(XB1::A))
+	{
 		Claw->Set(ControlMode::Position, 400);
 		Wait(.5);
 		Elevator1->Set(ControlMode::Position, 1400);
 	}
-	//HATCH player station
-	if (OperatorPanel->GetRawButton(bOperator::bHatchCollect)){
+	//HATCH player station -- xb1 b
+	if (Operator->GetRawButton(XB1::X))
+	{
 		Elevator1->Set(ControlMode::Position, 2000);
 		Claw->Set(ControlMode::Position, 1400);
 	}
-	if (OperatorPanel->GetRawButton(bOperator::bHome)){
-		Claw->Set(ControlMode::Position, 3000);
-		Wait(2);
+	//HATCH intake floor -- xb1 x
+	if (Operator->GetRawButton(XB1::B))
+	{
 		Elevator1->Set(ControlMode::Position, 500);
-		Claw->Set(ControlMode::Position, 500);
+		Claw->Set(ControlMode::Position, 1000);
 	}
-	//HATCH mid
-	// if (Operator->GetRawButton(bOperator::bHatchMid)){
+	//home
+	if ((Operator->GetRawButton(XB1::Menu)) && (Elevator1->GetSelectedSensorPosition(0) < 6000))
+	{
+		Claw->Set(ControlMode::Position, 0);
+		Wait(1);
+		Elevator1->Set(ControlMode::Position, 300);
+	}
+	else if (Operator->GetRawButton(XB1::Menu))
+	{
+		Claw->Set(ControlMode::Position, 3000);
+		Wait(1);
+		Elevator1->Set(ControlMode::Position, 2000);
+		Wait(1);
+		Elevator1->Set(ControlMode::Position, 300);
+		Claw->Set(ControlMode::Position, 0);
+	}
+	//HATCH mid -- xb1 y
+	// if (Operator->GetRawButton(XB1::Y)){
 	// 	Elevator1->Set(ControlMode::Position, 1400);
 	// 	Claw->Set(ControlMode::Position, 600);
 	// }
