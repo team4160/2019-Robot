@@ -191,34 +191,9 @@ void Robot::Periodic()
 	db->CurvatureDrive(Driver->GetRawAxis(PS4::PSRightStickDown), Driver->GetRawAxis(PS4::PSLeftStickRight) * -1, true);
 
 	//SMART DASHBOARD
-	// frc::SmartDashboard::PutNumber("Gyroscope", gyro->GetAngle());
-	// frc::SmartDashboard::PutNumber("POV", Operator->GetPOV());
-	// frc::SmartDashboard::PutNumber("Drive Left", DBLeft->GetSelectedSensorPosition(0));
-	// frc::SmartDashboard::PutNumber("Drive Left Pulse", DBLeft->GetSensorCollection().GetPulseWidthPosition());
-	// frc::SmartDashboard::PutNumber("Drive Left Quad", DBLeft->GetSensorCollection().GetQuadraturePosition());
-	// frc::SmartDashboard::PutNumber("Drive Right", DBRight->GetSelectedSensorPosition(0));
-	// frc::SmartDashboard::PutNumber("Drive Right Pulse", DBRight->GetSensorCollection().GetPulseWidthPosition());
-	// frc::SmartDashboard::PutNumber("Drive Right Quad", DBRight->GetSensorCollection().GetQuadraturePosition());
-	// frc::SmartDashboard::PutNumber("Elevator", Elevator1->GetSelectedSensorPosition(0));
-	// frc::SmartDashboard::PutNumber("Elevator Pulse", Elevator1->GetSensorCollection().GetPulseWidthPosition());
-	// frc::SmartDashboard::PutNumber("Elevator Quad", Elevator1->GetSensorCollection().GetQuadraturePosition());
-	// frc::SmartDashboard::PutNumber("Elevator Reverse Limit", Elevator1->GetSensorCollection().IsRevLimitSwitchClosed());
-	// frc::SmartDashboard::PutNumber("Claw", Claw->GetSelectedSensorPosition(0));
-	// frc::SmartDashboard::PutNumber("Claw Pulse", Claw->GetSensorCollection().GetPulseWidthPosition());
-	// frc::SmartDashboard::PutNumber("Claw Quad", Claw->GetSensorCollection().GetQuadraturePosition());
-	// frc::SmartDashboard::PutNumber("Claw Forward Limit", ClawSensor->GetGeneralInput(ClawSensor->LIMF));
-
-	// frc::SmartDashboard::PutNumber("DBLeft", PDP->GetCurrent(kPDP::DBLeft));
-	// frc::SmartDashboard::PutNumber("DBLeft2", PDP->GetCurrent(kPDP::DBLeft2));
-	// frc::SmartDashboard::PutNumber("DBRight", PDP->GetCurrent(kPDP::DBRight));
-	// frc::SmartDashboard::PutNumber("DBRight2", PDP->GetCurrent(kPDP::DBRight2));
-	// frc::SmartDashboard::PutNumber("Elevator1", PDP->GetCurrent(kPDP::Elevator1));
-	// frc::SmartDashboard::PutNumber("Elevator2", PDP->GetCurrent(kPDP::Elevator2));
-	// frc::SmartDashboard::PutNumber("ClimbArm", PDP->GetCurrent(kPDP::ClimbArm));
-	// frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
-	// frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
-	// frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
-	// frc::SmartDashboard::PutNumber("Drive Mode", driveState);
+	frc::SmartDashboard::PutNumber("POV", Operator->GetPOV());
+	frc::SmartDashboard::PutNumber("Elevator", Elevator1->GetSelectedSensorPosition(0));
+	frc::SmartDashboard::PutNumber("Claw", Claw->GetSelectedSensorPosition(0));
 
 	//OPERATOR CONTROLS
 	//Claw intake
