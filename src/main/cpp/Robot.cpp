@@ -21,6 +21,7 @@ void Robot::MotorBuilder(WPI_TalonSRX *srx, bool brake = true, bool inverted = f
 		srx->EnableCurrentLimit(true);
 	else
 		srx->EnableCurrentLimit(false);
+	srx->ClearStickyFaults();
 }
 
 void Robot::RobotInit()
@@ -124,6 +125,10 @@ void Robot::RobotInit()
 
 	// Elevator1->ConfigForwardSoftLimitEnable(false, 0);
 	// Elevator1->ConfigReverseSoftLimitEnable(false, 0);
+
+	PDP->ClearStickyFaults();
+	theCompressor->ClearAllPCMStickyFaults();
+	ClawSensor->ClearStickyFaults();
 
 	gyro->Calibrate(); //takes around 5 seconds to execute and must not move
 }
