@@ -25,9 +25,9 @@ void Robot::MotorBuilder(WPI_TalonSRX *srx, bool brake = true, bool inverted = f
 
 void Robot::RobotInit()
 {
-	m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
-	m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
-	frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
+	// m_chooser.SetDefaultOption(kAutoNameDefault, kAutoNameDefault);
+	// m_chooser.AddOption(kAutoNameCustom, kAutoNameCustom);
+	// frc::SmartDashboard::PutData("Auto Modes", &m_chooser);
 
 	driveState = 0; //set to tank
 
@@ -39,7 +39,7 @@ void Robot::RobotInit()
 	gyro = new ADXRS450_Gyro(SPI::kOnboardCS0);
 	PDP = new PowerDistributionPanel(0);
 	accel = new BuiltInAccelerometer();
-	// mytimer = new Timer();
+	mytimer = new Timer();
 
 	DBLeft = new WPI_TalonSRX(1);
 	DBLeft2 = new WPI_TalonSRX(2);
@@ -192,18 +192,18 @@ void Robot::Periodic()
 
 	//SMART DASHBOARD
 	// frc::SmartDashboard::PutNumber("Gyroscope", gyro->GetAngle());
-	frc::SmartDashboard::PutNumber("POV", Operator->GetPOV());
+	// frc::SmartDashboard::PutNumber("POV", Operator->GetPOV());
 	// frc::SmartDashboard::PutNumber("Drive Left", DBLeft->GetSelectedSensorPosition(0));
 	// frc::SmartDashboard::PutNumber("Drive Left Pulse", DBLeft->GetSensorCollection().GetPulseWidthPosition());
 	// frc::SmartDashboard::PutNumber("Drive Left Quad", DBLeft->GetSensorCollection().GetQuadraturePosition());
 	// frc::SmartDashboard::PutNumber("Drive Right", DBRight->GetSelectedSensorPosition(0));
 	// frc::SmartDashboard::PutNumber("Drive Right Pulse", DBRight->GetSensorCollection().GetPulseWidthPosition());
 	// frc::SmartDashboard::PutNumber("Drive Right Quad", DBRight->GetSensorCollection().GetQuadraturePosition());
-	frc::SmartDashboard::PutNumber("Elevator", Elevator1->GetSelectedSensorPosition(0));
+	// frc::SmartDashboard::PutNumber("Elevator", Elevator1->GetSelectedSensorPosition(0));
 	// frc::SmartDashboard::PutNumber("Elevator Pulse", Elevator1->GetSensorCollection().GetPulseWidthPosition());
 	// frc::SmartDashboard::PutNumber("Elevator Quad", Elevator1->GetSensorCollection().GetQuadraturePosition());
 	// frc::SmartDashboard::PutNumber("Elevator Reverse Limit", Elevator1->GetSensorCollection().IsRevLimitSwitchClosed());
-	frc::SmartDashboard::PutNumber("Claw", Claw->GetSelectedSensorPosition(0));
+	// frc::SmartDashboard::PutNumber("Claw", Claw->GetSelectedSensorPosition(0));
 	// frc::SmartDashboard::PutNumber("Claw Pulse", Claw->GetSensorCollection().GetPulseWidthPosition());
 	// frc::SmartDashboard::PutNumber("Claw Quad", Claw->GetSensorCollection().GetQuadraturePosition());
 	// frc::SmartDashboard::PutNumber("Claw Forward Limit", ClawSensor->GetGeneralInput(ClawSensor->LIMF));
@@ -218,7 +218,7 @@ void Robot::Periodic()
 	// frc::SmartDashboard::PutNumber("Claw current", PDP->GetCurrent(kPDP::Claw));
 	// frc::SmartDashboard::PutNumber("ClawLeft current", PDP->GetCurrent(kPDP::ClawLeft));
 	// frc::SmartDashboard::PutNumber("ClawRight current", PDP->GetCurrent(kPDP::ClawRight));
-	frc::SmartDashboard::PutNumber("Drive Mode", driveState);
+	// frc::SmartDashboard::PutNumber("Drive Mode", driveState);
 
 	//OPERATOR CONTROLS
 	//Claw intake
