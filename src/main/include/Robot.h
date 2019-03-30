@@ -39,10 +39,10 @@ class Robot : public frc::TimedRobot
 	static constexpr double turnSensitivity = 0.6;
 
 	// Setting up the TalonSRX's config
-	static constexpr double driveRampTime = 0.2;
+	static constexpr double driveRampTime = 0.05;
 	static constexpr int driveCurrentLimit = 20;
 	static constexpr int driveMaxCurrent = 30;
-	static constexpr int driveMaxTime = 100;
+	static constexpr int driveMaxTime = 0;
 
 	static constexpr double clawRampTime = 0;
 	static constexpr int clawCurrentLimit = 10;
@@ -69,7 +69,7 @@ class Robot : public frc::TimedRobot
 	ADXRS450_Gyro *gyro;
 	BuiltInAccelerometer *accel;
 	PowerDistributionPanel *PDP;
-	Timer *mytimer;
+	Timer *TimerA, *TimerX, *TimerM;
 
 	void MotorBuilder(WPI_TalonSRX *srx, bool brake, bool inverted, double RampTime, int CurrentLimit, int MaxCurrent, int MaxTime);
 	void RobotInit() override;
@@ -99,6 +99,10 @@ class Robot : public frc::TimedRobot
 
 	bool ClawFirstRun = false;
 	bool ElevatorFirstRun = false;
+	bool FlagA = false;
+	bool FlagX = false;
+	bool FlagM = false;
+	bool FlagM2 = false;
 };
 
 enum PS4

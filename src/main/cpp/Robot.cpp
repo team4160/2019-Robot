@@ -40,7 +40,9 @@ void Robot::RobotInit()
 	gyro = new ADXRS450_Gyro(SPI::kOnboardCS0);
 	PDP = new PowerDistributionPanel(0);
 	accel = new BuiltInAccelerometer();
-	mytimer = new Timer();
+ 	TimerA = new Timer();
+	TimerX = new Timer();
+	TimerM = new Timer();
 
 	DBLeft = new WPI_TalonSRX(1);
 	DBLeft2 = new WPI_TalonSRX(2);
@@ -129,6 +131,10 @@ void Robot::RobotInit()
 	PDP->ClearStickyFaults();
 	theCompressor->ClearAllPCMStickyFaults();
 	ClawSensor->ClearStickyFaults();
+
+	TimerA->Start();
+	TimerX->Start();
+	TimerM->Start();
 
 	gyro->Calibrate(); //takes around 5 seconds to execute and must not move
 }
@@ -274,43 +280,96 @@ void Robot::Periodic()
 	{
 		Elevator1->Set(ControlMode::Position, 3400);
 		Claw->Set(ControlMode::Position, 2000);
-		//CARGO intake floor --xb1 lb
+	}
+	//CARGO intake floor --xb1 lb
+	if (Operator->GetRawButton(XB1::LB))
+	{
+		Elevator1->Set(ControlMode::Position, 2400);
+		Claw->Set(ControlMode::Position, 4000);
 	}
 	//HATCH low rocket/cargoship -- xb1 a
 	if (Operator->GetRawButton(XB1::A))
 	{
-		Claw->Set(ControlMode::Position, 400);
-		Wait(.5);
-		Elevator1->Set(ControlMode::Position, 1400);
+		Claw->Set(ControlMode::Position, 350);
+		TimerA->Reset();
+		FlagA = true;
+		FlagX = false;
+		FlagM = false;
 	}
-	//HATCH player station -- xb1 b
+	if (FlagA)
+	{
+		if (TimerA->Get() > 0.5)
+		{
+			Elevator1->Set(ControlMode::Position, 1700);
+			FlagA = false;
+		}
+	}
+	//HATCH player station -- xb1 x
 	if (Operator->GetRawButton(XB1::X))
 	{
-		Elevator1->Set(ControlMode::Position, 2000);
-		Claw->Set(ControlMode::Position, 1400);
+		Claw->Set(ControlMode::Position, 400);
+		TimerX->Reset();
+		FlagX = true;
+		FlagA = false;
+		FlagM = false;
 	}
-	//HATCH intake floor -- xb1 x
+	if (FlagX)
+	{
+		if (TimerX->Get() > 0.5)
+		{
+			Elevator1->Set(ControlMode::Position, 1700);
+			FlagX = false;
+		}
+	}
+	// //HATCH intake floor -- xb1 b
 	if (Operator->GetRawButton(XB1::B))
 	{
-		Elevator1->Set(ControlMode::Position, 500);
-		Claw->Set(ControlMode::Position, 1000);
-	}
-	//home
-	if ((Operator->GetRawButton(XB1::Menu)) && (Elevator1->GetSelectedSensorPosition(0) < 6000))
-	{
-		Claw->Set(ControlMode::Position, 0);
-		Wait(1);
-		Elevator1->Set(ControlMode::Position, 300);
-	}
-	else if (Operator->GetRawButton(XB1::Menu))
-	{
+		Elevator1->Set(ControlMode::Position, 1700);
 		Claw->Set(ControlMode::Position, 3000);
-		Wait(1);
-		Elevator1->Set(ControlMode::Position, 2000);
-		Wait(1);
-		Elevator1->Set(ControlMode::Position, 300);
-		Claw->Set(ControlMode::Position, 0);
 	}
+
+	//home
+	if (Operator->GetRawButton(XB1::Menu))
+	{
+		if (Elevator1->GetSelectedSensorPosition(0) < 6000)
+		{
+			Claw->Set(ControlMode::Position, 0);
+			FlagM2 = false;
+		}
+		else
+		{
+			Elevator1->Set(ControlMode::Position, 6000);
+			Claw->Set(ControlMode::Position, 3000);
+			FlagM2 = true;
+		}
+		TimerM->Reset();
+		FlagM = true;
+		FlagX = false;
+		FlagA = false;
+	}
+	if (FlagM)
+	{
+		if (TimerM->Get() > 1)
+		{
+			Elevator1->Set(ControlMode::Position, 500);
+			Claw->Set(ControlMode::Position, 0);
+			FlagM = false;
+		}
+		else if (TimerM->Get() > 0.5)
+		{
+			if (FlagM2 == true)
+			{
+				Elevator1->Set(ControlMode::Position, 2000);
+				Claw->Set(ControlMode::Position, 1500);
+			}
+			else
+			{
+				Elevator1->Set(ControlMode::Position, 300);
+				FlagM = false;
+			}
+		}
+	}
+
 	//HATCH mid -- xb1 y
 	// if (Operator->GetRawButton(XB1::Y)){
 	// 	Elevator1->Set(ControlMode::Position, 1400);
