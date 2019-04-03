@@ -264,9 +264,12 @@ void Robot::Periodic()
 	//CARGO cargoship
 	if (Operator->GetPOV() == 90)
 	{
-		Elevator1->Set(ControlMode::Position, 7600);
-		Claw->Set(ControlMode::Position, 5800);
+		Elevator1->Set(ControlMode::Position, 6616);
+		Claw->Set(ControlMode::Position, 6100);
 	}
+
+
+	//SET THE PRESET FOR CARGO MID AT COMP
 	//CARGO rocket mid TODO change angle of claw, need actual rocket
 	if (Operator->GetPOV() == 0)
 	{
@@ -276,25 +279,25 @@ void Robot::Periodic()
 	//CARGO rocket low -- xb1 bottom keypad
 	if (Operator->GetPOV() == 180)
 	{
-		Elevator1->Set(ControlMode::Position, 5700);
-		Claw->Set(ControlMode::Position, 4700);
+		Elevator1->Set(ControlMode::Position, 4180);
+		Claw->Set(ControlMode::Position, 4601);
 	}
 	//CARGO player station -- xb1 left keypad
 	if (Operator->GetPOV() == 270)
 	{
-		Elevator1->Set(ControlMode::Position, 3900);
-		Claw->Set(ControlMode::Position, 2000);
+		Elevator1->Set(ControlMode::Position, 3029);
+		Claw->Set(ControlMode::Position, 2154);
 	}
 	//CARGO intake floor --xb1 lb
 	if (Operator->GetRawButton(XB1::LB))
 	{
-		Elevator1->Set(ControlMode::Position, 4200);
-		Claw->Set(ControlMode::Position, 5000);
+		Elevator1->Set(ControlMode::Position, 2706);
+		Claw->Set(ControlMode::Position, 4915);
 	}
 	//HATCH low rocket/cargoship -- xb1 a
 	if (Operator->GetRawButton(XB1::A))
 	{
-		Elevator1->Set(ControlMode::Position, 2400);
+		Elevator1->Set(ControlMode::Position, 1555);
 		TimerA->Reset();
 		FlagA = true;
 		FlagX = false;
@@ -305,14 +308,14 @@ void Robot::Periodic()
 	{
 		if (TimerA->Get() > 0.5)
 		{
-			Claw->Set(ControlMode::Position, 1000);
+			Claw->Set(ControlMode::Position, 982);
 			FlagA = false;
 		}
 	}
 	//HATCH player station -- xb1 x
 	if (Operator->GetRawButton(XB1::X))
 	{
-		Elevator1->Set(ControlMode::Position, 2800);
+		Elevator1->Set(ControlMode::Position, 2204);
 		TimerX->Reset();
 		FlagX = true;
 		FlagA = false;
@@ -323,15 +326,15 @@ void Robot::Periodic()
 	{
 		if (TimerX->Get() > 0.25)
 		{
-			Claw->Set(ControlMode::Position, 1400);
+			Claw->Set(ControlMode::Position, 1787);
 			FlagX = false;
 		}
 	}
 	// //HATCH intake floor -- xb1 b
 	if (Operator->GetRawButton(XB1::B))
 	{
-		Elevator1->Set(ControlMode::Position, 2100);
-		Claw->Set(ControlMode::Position, 3300);
+		Elevator1->Set(ControlMode::Position, 1621);
+		Claw->Set(ControlMode::Position, 3736);
 	}
 
 	//home
@@ -377,6 +380,8 @@ void Robot::Periodic()
 		}
 	}
 
+
+//SET THE PRESET FOR HATCH MID AT COMP
 	// HATCH mid -- xb1 y
 	if (Operator->GetRawButton(XB1::Y))
 	{
