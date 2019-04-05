@@ -61,7 +61,7 @@ void Robot::RobotInit()
 
 	theCompressor = new Compressor(0);
 
-	Hatch = new Solenoid(2); // PCM ID is 0
+	Hatch = new Solenoid(4); // PCM ID is 0
 	ClimbArm = new Solenoid(5);
 	ClimbFront = new DoubleSolenoid(0, 1); // foward,reverse
 	ClimbBack = new DoubleSolenoid(7, 6);
@@ -99,9 +99,9 @@ void Robot::RobotInit()
 
 	// TODO Claw PID See 10.1 set P = 1 I = 0.001 + maybe don't override but use website for now Claw->Config_kP(/*slot*/ 0, 1, kTimeoutMs);
 	Claw->Config_kP(/*slot*/ 0, 3, kTimeoutMs);
-	Claw->Config_kI(/*slot*/ 0, 0.005, kTimeoutMs);
-	Claw->Config_kD(/*slot*/ 0, 10000, kTimeoutMs);
-	// Claw->SetSelectedSensorPosition(0, 0, 0);
+	Claw->Config_kI(/*slot*/ 0, 0.00025, kTimeoutMs);
+	Claw->Config_kD(/*slot*/ 0, 100, kTimeoutMs);
+	Claw->SetSelectedSensorPosition(0, 0, 0);
 
 	// TODO create soft encoder limits when you found positions
 	Claw->ConfigReverseSoftLimitThreshold(200, kTimeoutMs);
@@ -236,7 +236,7 @@ void Robot::Periodic()
 			ClawFirstRun = false;
 		}
 	}
-
+//Elevator Arm
 	ElevatorHold = Operator->GetRawAxis(XB1::XBLeftStickDown) * -1;
 	if (ElevatorHold < -0.07 || ElevatorHold > 0.07)
 	{
@@ -251,6 +251,8 @@ void Robot::Periodic()
 			ElevatorFirstRun = false;
 		}
 	}
+
+
 	// if (Operator->GetRawButton(XB1::A))
 	// 	Elevator1->Set(ControlMode::Position, 1000);
 	// if (Operator->GetRawButton(XB1::X))
@@ -262,10 +264,11 @@ void Robot::Periodic()
 
 	//TODO all of them need claw first to a certain degree
 	//CARGO cargoship
+
 	if (Operator->GetPOV() == 90)
 	{
-		Elevator1->Set(ControlMode::Position, 6616);
-		Claw->Set(ControlMode::Position, 6100);
+		Elevator1->Set(ControlMode::Position, 6855);
+		Claw->Set(ControlMode::Position, 5900);
 	}
 
 
@@ -273,26 +276,26 @@ void Robot::Periodic()
 	//CARGO rocket mid TODO change angle of claw, need actual rocket
 	if (Operator->GetPOV() == 0)
 	{
-		Elevator1->Set(ControlMode::Position, 8700);
+		Elevator1->Set(ControlMode::Position, 7815);
 		Claw->Set(ControlMode::Position, 5500);
 	}
 	//CARGO rocket low -- xb1 bottom keypad
 	if (Operator->GetPOV() == 180)
 	{
-		Elevator1->Set(ControlMode::Position, 4180);
-		Claw->Set(ControlMode::Position, 4601);
+		Elevator1->Set(ControlMode::Position, 4582);
+		Claw->Set(ControlMode::Position, 4500);
 	}
 	//CARGO player station -- xb1 left keypad
 	if (Operator->GetPOV() == 270)
 	{
-		Elevator1->Set(ControlMode::Position, 3029);
-		Claw->Set(ControlMode::Position, 2154);
+		Elevator1->Set(ControlMode::Position, 3868);
+		Claw->Set(ControlMode::Position, 2675);
 	}
 	//CARGO intake floor --xb1 lb
 	if (Operator->GetRawButton(XB1::LB))
 	{
-		Elevator1->Set(ControlMode::Position, 2706);
-		Claw->Set(ControlMode::Position, 4915);
+		Elevator1->Set(ControlMode::Position, 3633);
+		Claw->Set(ControlMode::Position, 5276);
 	}
 	//HATCH low rocket/cargoship -- xb1 a
 	if (Operator->GetRawButton(XB1::A))
@@ -315,7 +318,7 @@ void Robot::Periodic()
 	//HATCH player station -- xb1 x
 	if (Operator->GetRawButton(XB1::X))
 	{
-		Elevator1->Set(ControlMode::Position, 2204);
+		Elevator1->Set(ControlMode::Position, 2600);
 		TimerX->Reset();
 		FlagX = true;
 		FlagA = false;
@@ -324,9 +327,9 @@ void Robot::Periodic()
 	}
 	if (FlagX)
 	{
-		if (TimerX->Get() > 0.25)
+		if (TimerX->Get() > 0.125)
 		{
-			Claw->Set(ControlMode::Position, 1787);
+			Claw->Set(ControlMode::Position, 1945);
 			FlagX = false;
 		}
 	}
@@ -385,7 +388,7 @@ void Robot::Periodic()
 	// HATCH mid -- xb1 y
 	if (Operator->GetRawButton(XB1::Y))
 	{
-		Elevator1->Set(ControlMode::Position, 7500);
+		Elevator1->Set(ControlMode::Position, 5875);
 		TimerY->Reset();
 		FlagY = true;
 		FlagX = false;
@@ -396,16 +399,20 @@ void Robot::Periodic()
 	{
 		if (TimerY->Get() > 0.5)
 		{
-			Claw->Set(ControlMode::Position, 3600);
+			Claw->Set(ControlMode::Position, 2800);
 			FlagY = false;
 		}
 	}
+	if (Operator->GetRawButton(XB1::View))
+	{
+		Elevator1->Set(ControlMode::Position, 2600);
+	}
 
-	// if (Operator->GetRawButton(XB1::Y))
-	// {
-	// 	Elevator1->Set(ControlMode::Position, 7500);
-	// 	Claw->Set(ControlMode::Position, 3300);
-	// }
+// 	if (Operator->GetRawButton(XB1::Y))
+// 	{
+// 		Elevator1->Set(ControlMode::Position, 7500);
+// 		Claw->Set(ControlMode::Position, 3300);
+// 	}
 }
 
 void Robot::TestPeriodic() {}
