@@ -99,7 +99,7 @@ void Robot::RobotInit()
 
 	// TODO Claw PID See 10.1 set P = 1 I = 0.001 + maybe don't override but use website for now Claw->Config_kP(/*slot*/ 0, 1, kTimeoutMs);
 	Claw->Config_kP(/*slot*/ 0, 3, kTimeoutMs);
-	Claw->Config_kI(/*slot*/ 0, 0.00025, kTimeoutMs);
+	Claw->Config_kI(/*slot*/ 0, 0.00005, kTimeoutMs);
 	Claw->Config_kD(/*slot*/ 0, 100, kTimeoutMs);
 	Claw->SetSelectedSensorPosition(0, 0, 0);
 
